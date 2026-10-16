@@ -7,40 +7,92 @@ export default function RecentInitiative({
   description,
   videoId,
   link,
-  Icon = "",
+  Icon,
   linkText = "Learn More",
   videoPosition = "left",
+  orientation = "vertical",
+  videoWidth = "default",
 }) {
   const videoOnLeft = videoPosition === "left";
-  const paragraphs = Array.isArray(description) ? description : [description];
+  const isHorizontal = orientation === "horizontal";
+
+  const paragraphs = Array.isArray(description)
+    ? description
+    : [description];
+
+  // Keep video and content columns balanced according to the selected width.
+  const videoColumnClass =
+    videoWidth === "wide"
+      ? "lg:col-span-5"
+      : videoWidth === "compact"
+        ? "lg:col-span-3"
+        : "lg:col-span-4";
+
+  const contentColumnClass =
+    videoWidth === "wide"
+      ? "lg:col-span-7"
+      : videoWidth === "compact"
+        ? "lg:col-span-9"
+        : "lg:col-span-8";
 
   return (
     <section className="bg-[#f8f9f7] py-10 sm:py-12 lg:py-12">
       <div className="mx-auto grid max-w-[1600px] items-center gap-8 px-5 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-10">
-        <div className={`min-w-0 lg:col-span-4 ${videoOnLeft ? "lg:order-1" : "lg:order-2"}`}>
-          <div className="mx-auto w-full max-h-[90vh] overflow-hidden rounded-[28px] shadow-[0_15px_30px_rgba(0,0,0,0.16)]">
-            <div className="relative aspect-9/16 w-full bg-black">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${videoId}`}
-                title={title}
-                className="absolute inset-0 h-full w-full border-0"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
+        {/* Video column */}
+        <div
+          className={`min-w-0 ${videoColumnClass} ${
+            videoOnLeft ? "lg:order-1" : "lg:order-2"
+          }`}
+        >
+          <div
+            className={`mx-auto w-full overflow-hidden rounded-2xl shadow-[0_15px_30px_rgba(0,0,0,0.16)] ${
+              isHorizontal ? "max-w-[640px]" : "max-w-[435px]"
+            }`}
+          >
+            <div
+              className={`relative w-full bg-black ${
+                isHorizontal ? "aspect-video" : "aspect-[9/16]"
+              }`}
+            >
+              {videoId ? (
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+                  title={title}
+                  className="absolute inset-0 block h-full w-full border-0"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-sm text-white/70">
+                  Video unavailable
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        <div className={`min-w-0 lg:col-span-8 ${videoOnLeft ? "lg:order-2" : "lg:order-1"}`}>
+        {/* Content column */}
+        <div
+          className={`min-w-0 ${contentColumnClass} ${
+            videoOnLeft ? "lg:order-2" : "lg:order-1"
+          }`}
+        >
           <span className="inline-flex items-center rounded-full bg-[#e4f0e7] px-5 py-3 text-sm font-medium leading-5 text-[#236b42]">
             Recent Initiatives
           </span>
 
-          <h2 className="mt-4 text-2xl  font-bold leading-[1.2] tracking-tight text-[#242424] sm:text-3xl lg:text-[42px]">
-            <span>{title}</span> 
-            {Icon&&(<Icon className="text-[#F59E0B] inline-block" size={35}/>)}
+          <h2 className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-2xl font-bold leading-[1.2] tracking-tight text-[#242424] sm:text-3xl lg:text-[42px]">
+            <span>{title}</span>
+
+            {Icon && (
+              <Icon
+                size={35}
+                aria-hidden="true"
+                className="inline-block shrink-0 text-[#F59E0B]"
+              />
+            )}
           </h2>
 
           {(location || date) && (
@@ -60,10 +112,10 @@ export default function RecentInitiative({
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#286b43] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#1d5433]"
+              className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#286b43] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#1d5433] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#286b43]"
             >
               {linkText}
-              <ExternalLink size={15} />
+              <ExternalLink size={15} aria-hidden="true" />
             </a>
           )}
         </div>

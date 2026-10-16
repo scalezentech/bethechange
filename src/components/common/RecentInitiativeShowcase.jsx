@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Heart, ArrowUpRight } from "lucide-react";
 import sectionTitleBg from "../../assets/images/background/section-title-bg-two.png";
+import aboutBgImage from "../../assets/images/about/about-bg.png"
 
 function InitiativeSlider({ images, title }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,9 +36,10 @@ function InitiativeSlider({ images, title }) {
               <img
                 src={image}
                 alt={`${title} - image ${index + 1}`}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain object-center"
                 loading={index === 0 ? "eager" : "lazy"}
-                draggable="false"
+                fetchPriority={index === 0 ? "high" : "auto"}
+                draggable={false}
               />
             </div>
           ))}
@@ -64,21 +66,22 @@ function InitiativeSlider({ images, title }) {
             <ChevronRight size={21} />
           </button>
 
-          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => setActiveIndex(index)}
-                aria-label={`Show image ${index + 1}`}
-                aria-current={index === activeIndex ? "true" : undefined}
-                className={`h-1.5 rounded-full transition-all ${
-                  activeIndex === index
-                    ? "w-8 bg-white"
-                    : "w-4 bg-white/60 hover:bg-white"
-                }`}
-              />
-            ))}
+          <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center px-4">
+            <div className="flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full bg-black/10 px-2 py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-label={`Show image ${index + 1} of ${images.length}`}
+                  aria-current={index === activeIndex ? "true" : undefined}
+                  className={`h-2 shrink-0 rounded-full transition-all duration-300 ${activeIndex === index
+                    ? "w-6 bg-white"
+                    : "w-2 bg-white/65 hover:bg-white"
+                    }`}
+                />
+              ))}
+            </div>
           </div>
         </>
       )}
@@ -91,7 +94,7 @@ export default function RecentInitiativeShowcase({
   images = [],
   date,
   description,
-  contentPosition = "right",
+  contentPosition = "left",
   primaryButtonText,
   primaryButtonLink,
   secondaryButtonText = "Know More",
@@ -101,35 +104,29 @@ export default function RecentInitiativeShowcase({
   const paragraphs = Array.isArray(description) ? description : [description];
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#f5f5f1] px-5 py-14 sm:px-8 sm:py-16 lg:min-h-[580px] lg:px-10 lg:py-20">
+    <section className="relative isolate overflow-hidden px-5 py-14 sm:px-8 sm:py-16 lg:min-h-[580px] lg:px-10 lg:py-20">
       <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-10"
-        style={{
-          backgroundImage:
-            "url('/assets/images/background/initiative-bg.png')",
-        }}
+        // aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat "
+        style={{ backgroundImage: `url(${aboutBgImage})` }}
       />
 
       <div className="relative z-10 mx-auto grid max-w-[1400px] items-center gap-10 lg:grid-cols-2 lg:gap-12">
         <div className={contentOnRight ? "lg:order-1" : "lg:order-2"}>
-          <div className="overflow-hidden bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+          <div className="overflow-hidden  shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
             <InitiativeSlider images={images} title={title} />
           </div>
         </div>
 
         <div
-          className={`min-w-0 ${
-            contentOnRight ? "text-center lg:order-2" : "text-center lg:order-1"
-          }`}
+          className={`min-w-0 ${contentOnRight ? "text-center lg:order-2" : "text-center lg:order-1"
+            }`}
         >
-          <div className="relative mb-5 inline-flex items-center justify-center px-5 py-2">
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 z-0 bg-contain bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${sectionTitleBg})` }}
-            />
-            <span className="relative z-10 text-3xl font-extrabold text-green-700 sm:text-4xl">
+          <div className="relative mb-5 inline-flex items-center justify-center px-5 py-2 overflow-visible">
+
+            <img className="pointer-events-none absolute w-full h-20 z-0 bg-cover bg-center bg-no-repeat" src={sectionTitleBg} alt="section-title-bg" />
+
+            <span className="relative z-1 text-3xl font-extrabold text-green-700 sm:text-4xl">
               Our Recent Initiative
             </span>
           </div>
