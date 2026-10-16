@@ -1,10 +1,16 @@
+import Header from "./components/layout/Header";
+import HomePage from "./pages/HomePage";
 
-const App = () => {
+function App() {
   return (
-    <div>
-      App
-    </div>
-  )
+    <>
+      <Header />
+
+      <main className="min-h-screen">
+        <HomePage />
+      </main>
+    </>
+  );
 }
 
-export default App
+export default App;
