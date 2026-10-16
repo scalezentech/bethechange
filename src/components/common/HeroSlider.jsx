@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import flyer1 from "../../assets/images/flyer/1.webp";
@@ -39,44 +39,27 @@ const slides = [
   flyer11,
 ];
 
-const extendedSlides = [...slides, slides[0]];
-
 export default function HeroSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [transitionEnabled, setTransitionEnabled] = useState(true);
 
-  const showNext = useCallback(() => {
-    setTransitionEnabled(true);
-    setActiveIndex((current) => current + 1);
-  }, []);
+  const showNext = () => {
+    setActiveIndex((current) => (current + 1) % slides.length);
+  };
 
-  const showPrevious = useCallback(() => {
-    if (activeIndex === 0) {
-      setTransitionEnabled(false);
-      setActiveIndex(slides.length);
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setTransitionEnabled(true);
-          setActiveIndex(slides.length - 1);
-        });
-      });
-    } else {
-      setTransitionEnabled(true);
-      setActiveIndex((current) => current - 1);
-    }
-  }, [activeIndex]);
+  const showPrevious = () => {
+    setActiveIndex((current) => (current - 1 + slides.length) % slides.length);
+  };
 
   useEffect(() => {
-    const interval = window.setInterval(showNext, 5000);
-    return () => window.clearInterval(interval);
-  }, [showNext]);
+    const interval = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % slides.length);
+    }, 5000);
 
-  const handleTransitionEnd = () => {
-    if (activeIndex === slides.length) {
-      setTransitionEnabled(false);
-      setActiveIndex(0);
-    }
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const goToSlide = (index) => {
+    setActiveIndex(index);
   };
 
   return (
@@ -84,21 +67,19 @@ export default function HeroSlider() {
       className="relative w-full overflow-hidden bg-gray-100"
       aria-label="Be The Change Foundation image slider"
     >
-      <div className="relative aspect-4/3 w-full overflow-hidden sm:aspect-video lg:aspect-5/3">
+      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-video lg:aspect-[5/3]">
         <div
-          className={`flex h-full w-full ${
-            transitionEnabled
-              ? "transition-transform duration-700 ease-in-out"
-              : ""
-          }`}
+          className="flex h-full w-full transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-          onTransitionEnd={handleTransitionEnd}
         >
-          {extendedSlides.map((image, index) => (
-            <div key={index} className="h-full w-full shrink-0">
+          {slides.map((image, index) => (
+            <div
+              key={image}
+              className="h-full w-full flex-shrink-0"
+            >
               <img
                 src={image}
-                alt={`Be The Change Foundation flyer ${(index % slides.length) + 1}`}
+                alt={`Be The Change Foundation flyer ${index + 1}`}
                 className="h-full w-full object-contain"
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchPriority={index === 0 ? "high" : "auto"}
@@ -132,14 +113,11 @@ export default function HeroSlider() {
           <button
             key={index}
             type="button"
-            onClick={() => {
-              setTransitionEnabled(true);
-              setActiveIndex(index);
-            }}
+            onClick={() => goToSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
-            aria-current={index === activeIndex % slides.length ? "true" : undefined}
+            aria-current={index === activeIndex ? "true" : undefined}
             className={`h-2 rounded-full transition-all duration-300 ${
-              index === activeIndex % slides.length
+              index === activeIndex
                 ? "w-5 bg-white"
                 : "w-2 bg-white/60 hover:bg-white"
             }`}
