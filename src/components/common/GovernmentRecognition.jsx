@@ -136,7 +136,7 @@ export default function GovernmentRecognition() {
                             >
                                 <Eye size={18} aria-hidden="true" />
                                 Click here to View More
-                                <span aria-hidden="true">→</span>
+                                
                             </a>
                         </div>
 
