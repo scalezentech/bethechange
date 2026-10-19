@@ -6,8 +6,8 @@ import {
     PawPrint,
 } from "lucide-react";
 
-import pollutionBg from "../assets/images/background/pollution-lavel-bg.png";
-import sectionTitleBg from "../assets/images/background/section-title-bg-two.png";
+import pollutionBg from "../../assets/images/background/pollution-lavel-bg.png";
+import sectionTitleBg from "../../assets/images/background/section-title-bg-two.png";
 
 const initiatives = [
     {

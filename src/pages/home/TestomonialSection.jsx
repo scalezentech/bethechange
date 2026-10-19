@@ -1,10 +1,10 @@
-import AwardHighlights from "../components/common/AwardHighlights";
-import ParticipantFeedbackVideos from "../components/common/ParticipantFeedbackVideos";
-import VoiceOfChange from "../components/common/VoiceOfChange";
-import sep6Video from "../assets/images/initiatives/6sep2026/v1.mp4"
-import sep6Thumbnail from "../assets/images/initiatives/6sep2026/C3.jpeg"
-import entrepreneurVideo from "../assets/images/initiatives/27sep2026/reel.mp4"
-import entrepreneurThumbnail from "../assets/images/initiatives/27sep2026/s (1).jpeg"
+import AwardHighlights from "../../components/common/AwardHighlights";
+import ParticipantFeedbackVideos from "../../components/common/ParticipantFeedbackVideos";
+import VoiceOfChange from "../../components/common/VoiceOfChange";
+import sep6Video from "../../assets/images/initiatives/6sep2026/v1.mp4"
+import sep6Thumbnail from "../../assets/images/initiatives/6sep2026/C3.jpeg"
+import entrepreneurVideo from "../../assets/images/initiatives/27sep2026/reel.mp4"
+import entrepreneurThumbnail from "../../assets/images/initiatives/27sep2026/s (1).jpeg"
 
 export default function TestimonialsSection() {
     return (

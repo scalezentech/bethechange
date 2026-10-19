@@ -4,8 +4,8 @@ import {
   HandCoins,
 } from "lucide-react";
 
-import counterBg from "../assets/images/background/counter-bg.png"
-import sectionTitleBgTwo from "../assets/images/background/section-title-bg-two.png"
+import counterBg from "../../assets/images/background/counter-bg.png"
+import sectionTitleBgTwo from "../../assets/images/background/section-title-bg-two.png"
 
 export default function EnvironmentalInitiatives() {
 

@@ -1,7 +1,7 @@
-import RecentInitiative from "../components/common/RecentInitiative";
-import FeaturedSpeaker from "../components/common/FeaturedSpeaker"
+import RecentInitiative from "../../components/common/RecentInitiative";
+import FeaturedSpeaker from "../../components/common/FeaturedSpeaker"
 import { FaPrayingHands } from "react-icons/fa";
-import RecentShowcaseInitiative from "../components/common/RecentShowcaseInitiative";
+import RecentShowcaseInitiative from "../../components/common/RecentShowcaseInitiative";
 import CSRSection from "./CSRSection"
 
 export default function RecentInitiatives() {

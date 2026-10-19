@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { CalendarDays, Users } from "lucide-react";
 
-import sectionTitleBg from "../assets/images/background/section-title-bg-two.png";
+// import sectionTitleBg from "../assets/images/background/section-title-bg-two.png";
 
-import treePlantation from "../assets/images/causes/cause-two1.jpg";
-import bloodDonation from "../assets/images/causes/cause-two2.jpg";
-import careerGuidance from "../assets/images/causes/cause-two22.jpg";
+import treePlantation from "../../assets/images/causes/cause-two1.jpg";
+import bloodDonation from "../../assets/images/causes/cause-two2.jpg";
+import careerGuidance from "../../assets/images/causes/cause-two22.jpg";
 
 const causes = [
   {

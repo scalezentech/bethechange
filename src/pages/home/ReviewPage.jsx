@@ -1,7 +1,7 @@
-import Reviews from "../components/common/Reviews"
+import Reviews from "../../components/common/Reviews"
 
-import bharatDate from "../assets/images/testimonialsReviewer/author.png"
-import sanjayAdit from "../assets/images/testimonialsReviewer/author1.png"
+import bharatDate from "../../assets/images/testimonialsReviewer/author.png"
+import sanjayAdit from "../../assets/images/testimonialsReviewer/author1.png"
 
 const ReviewPage = () => {
 

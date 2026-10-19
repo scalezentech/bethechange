@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import newsletterBg from "../assets/images/background/newsletter-bg.png";
+import newsletterBg from "../../assets/images/background/newsletter-bg.png";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");

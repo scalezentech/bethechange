@@ -1,6 +1,6 @@
-import HeroSlider from "../components/common/HeroSlider";
-import heroBgImage from "../assets/images/hero/hero-two-bg.jpg";
-import sectionTitleBgTwo from "../assets/images/background/section-title-bg-two.png";
+import HeroSlider from "../../components/common/HeroSlider";
+import heroBgImage from "../../assets/images/hero/hero-two-bg.jpg";
+import sectionTitleBgTwo from "../../assets/images/background/section-title-bg-two.png";
 
 const SITE = "https://bethechange.org.in";
 

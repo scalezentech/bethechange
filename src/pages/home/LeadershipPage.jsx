@@ -21,9 +21,9 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
-import mayurDhokchaule from "../assets/images/founder/Mayur Dhokchaule.jpg";
-import rachanaSalunke from "../assets/images/founder/Rachana Salunke.jpeg";
-import abhishekTupe from "../assets/images/founder/Abhishek Tupe.jpg";
+import mayurDhokchaule from "../../assets/images/founder/Mayur Dhokchaule.jpg";
+import rachanaSalunke from "../../assets/images/founder/Rachana Salunke.jpeg";
+import abhishekTupe from "../../assets/images/founder/Abhishek Tupe.jpg";
 
 const leadership = [
   {
