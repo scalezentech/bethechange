@@ -90,6 +90,7 @@ function InitiativeSlider({ images, title }) {
 }
 
 export default function RecentInitiativeShowcase({
+  initiativeTitle = "Our Recent Initiative",
   title,
   images = [],
   date,
@@ -127,7 +128,7 @@ export default function RecentInitiativeShowcase({
             <img className="pointer-events-none absolute w-full h-20 z-0 bg-cover bg-center bg-no-repeat" src={sectionTitleBg} alt="section-title-bg" />
 
             <span className="relative z-1 text-3xl font-extrabold text-green-700 sm:text-4xl">
-              Our Recent Initiative
+              {initiativeTitle}
             </span>
           </div>
 

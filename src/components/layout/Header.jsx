@@ -363,7 +363,7 @@ export default function Header() {
             </HeaderLink>
 
             <HeaderLink
-              href="/ourmission"
+              href="/our-mission"
               onClick={closeMobileMenu}
               className="px-4 py-3 text-center text-sm font-semibold transition-colors hover:bg-white/10"
             >
