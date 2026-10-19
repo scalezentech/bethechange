@@ -18,6 +18,7 @@ import {
 
 import desktopHeaderImage from "../../assets/images/header_images/desktop-header.webp";
 import mobileHeaderImage from "../../assets/images/header_images/mobile-header.webp";
+import { Link } from "react-router-dom";
 
 const areasOfWork = [
   { label: "Education", href: "/education.html" },
@@ -88,8 +89,8 @@ function HeaderLink({
   onClick,
 }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className={className}
       onClick={onClick}
       {...(external
@@ -100,7 +101,7 @@ function HeaderLink({
         : {})}
     >
       {children}
-    </a>
+    </Link>
   );
 }
 
@@ -354,7 +355,7 @@ export default function Header() {
             </HeaderLink>
 
             <HeaderLink
-              href="/about-us.html"
+              href="/about-us"
               onClick={closeMobileMenu}
               className="px-4 py-3 text-center text-sm font-semibold transition-colors hover:bg-white/10"
             >
@@ -362,7 +363,7 @@ export default function Header() {
             </HeaderLink>
 
             <HeaderLink
-              href="/ourmission.html"
+              href="/ourmission"
               onClick={closeMobileMenu}
               className="px-4 py-3 text-center text-sm font-semibold transition-colors hover:bg-white/10"
             >
@@ -370,7 +371,7 @@ export default function Header() {
             </HeaderLink>
 
             <HeaderLink
-              href="/ourvission.html"
+              href="/ourvission"
               onClick={closeMobileMenu}
               className="px-4 py-3 text-center text-sm font-semibold transition-colors hover:bg-white/10"
             >
@@ -390,7 +391,7 @@ export default function Header() {
             />
 
             <HeaderLink
-              href="/contact-us.html"
+              href="/contact-us"
               onClick={closeMobileMenu}
               className="px-4 py-3 text-center text-sm font-semibold transition-colors hover:bg-white/10"
             >

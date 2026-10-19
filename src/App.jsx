@@ -1,6 +1,8 @@
 import Header from "./components/layout/Header"
 import Footer from "./components/layout/Footer";
+import { Routes, Route } from 'react-router-dom'
 import Home from "./pages/home/Home";
+import AboutUs from "./pages/about/AboutUs";
 
 
 
@@ -12,7 +14,11 @@ function App() {
 
       <main className="min-h-screen">
 
-        <Home />
+        <Routes >
+            <Route path="/" element={<Home />} />
+            <Route path="/about-us" element={<AboutUs />} />
+        </Routes>
+
 
       </main>
 
