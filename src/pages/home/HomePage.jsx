@@ -2,7 +2,7 @@ import HeroSlider from "../../components/common/HeroSlider";
 import heroBgImage from "../../assets/images/hero/hero-two-bg.jpg";
 import sectionTitleBgTwo from "../../assets/images/background/section-title-bg-two.png";
 import { Link } from "react-router-dom";
-
+import pdf from "../../assets/BE_THE_CHANGE_PROSPECTUS_2025.pdf"
 const SITE = "https://bethechange.org.in";
 
 export default function HomePage() {
@@ -42,7 +42,7 @@ export default function HomePage() {
               </p>
 
               <a
-                href="/assets/BE%20THE%20CHANGE%20PROSPECTUS%202025.pdf"
+                href={pdf}
                 download
                 className="mt-6 inline-flex items-center justify-center rounded-md bg-[#168b54] px-7 py-4 font-semibold text-white transition hover:bg-green-800"
               >

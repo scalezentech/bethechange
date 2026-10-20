@@ -405,7 +405,7 @@ export default function AboutPage() {
 
           <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:flex-row">
             <a
-              href="/contact-us.html"
+              href="/contact-us"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[#ffdc62] px-6 py-3 text-sm font-bold text-[#173d2b] transition hover:bg-yellow-300"
             >
               Contact Us
