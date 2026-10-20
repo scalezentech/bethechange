@@ -1,4 +1,7 @@
+
 import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+
 import {
   Languages,
   BriefcaseBusiness,
@@ -8,13 +11,14 @@ import {
   X,
   Heart,
 } from "lucide-react";
+
 import {
   FaFacebookF,
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -45,18 +49,38 @@ const projects = [
     href: "https://sunriseschool.bethechange.org.in/",
     external: true,
   },
-  { label: "Teachers Award", href: "https://shikshakpuraskar.in/", external: true },
-  { label: "Sparsh Arts", href: "https://sparshart.com/", external: true },
+  {
+    label: "Teachers Award",
+    href: "https://shikshakpuraskar.in/",
+    external: true,
+  },
+  {
+    label: "Sparsh Arts",
+    href: "https://sparshart.com/",
+    external: true,
+  },
   { label: "Tree Plantation", href: "#" },
   { label: "Educational Awareness", href: "#" },
   { label: "Our Programs", href: "/our-programs" },
-  {label : "Krushisetu", href : "https://www.krushisetu.org"}
+  { label: "Krushisetu", href: "https://www.krushisetu.org" },
 ];
 
 const socialLinks = [
-  { label: "Facebook", href: "https://www.facebook.com/bethechangemaha", Icon: FaFacebookF },
-  { label: "Twitter", href: "https://twitter.com/bethechangemaha", Icon: FaTwitter },
-  { label: "Instagram", href: "https://www.instagram.com/bethechangemaha", Icon: FaInstagram },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/bethechangemaha",
+    Icon: FaFacebookF,
+  },
+  {
+    label: "Twitter",
+    href: "https://twitter.com/bethechangemaha",
+    Icon: FaTwitter,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/bethechangemaha",
+    Icon: FaInstagram,
+  },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/company/bethechangemaha/about/",
@@ -84,9 +108,9 @@ const languages = [
 const DESKTOP_QUERY = "(min-width: 1024px)";
 
 const isDesktop = () =>
-  typeof window !== "undefined" && window.matchMedia(DESKTOP_QUERY).matches;
+  typeof window !== "undefined" &&
+  window.matchMedia(DESKTOP_QUERY).matches;
 
-// Respect "reduce motion": animations collapse to instant changes.
 const t = (seconds) =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -94,11 +118,14 @@ const t = (seconds) =>
     : seconds;
 
 function normalizePath(path = "/") {
-  return path.replace(/\/+$/, "").replace(/\$/i, "") || "/";
+  return path.replace(/\/+$/, "") || "/";
 }
 
 function isActiveRoute(pathname, href) {
-  if (!href || href === "#" || /^https?:\/\//i.test(href)) return false;
+  if (!href || href === "#" || /^https?:\/\//i.test(href)) {
+    return false;
+  }
+
   return normalizePath(pathname) === normalizePath(href);
 }
 
@@ -146,7 +173,12 @@ function HeaderLink({
   }
 
   return (
-    <Link to={href} className={className} onClick={onClick} {...props}>
+    <Link
+      to={href}
+      className={className}
+      onClick={onClick}
+      {...props}
+    >
       {children}
     </Link>
   );
@@ -154,10 +186,6 @@ function HeaderLink({
 
 /* --------------------------------------------------
    Dropdown
-
-   Desktop (mouse): opens on hover / keyboard focus.
-   Touch & mobile: opens and closes on tap.
-   GSAP animates the panel height + fades the items in.
 -------------------------------------------------- */
 
 function Dropdown({ label, items, pathname, onNavigate }) {
@@ -168,7 +196,9 @@ function Dropdown({ label, items, pathname, onNavigate }) {
   const pointerType = useRef("mouse");
   const hasMounted = useRef(false);
 
-  const hasActiveItem = items.some((item) => isActiveRoute(pathname, item.href));
+  const hasActiveItem = items.some((item) =>
+    isActiveRoute(pathname, item.href)
+  );
 
   const close = () => setIsOpen(false);
 
@@ -177,13 +207,12 @@ function Dropdown({ label, items, pathname, onNavigate }) {
     onNavigate?.();
   };
 
-  /* Animation -------------------------------------------------- */
   useGSAP(
     () => {
       const panel = panelRef.current;
+
       if (!panel) return;
 
-      // Skip the very first run so closed dropdowns don't "animate closed" on load.
       if (!hasMounted.current) {
         hasMounted.current = true;
         return;
@@ -223,36 +252,50 @@ function Dropdown({ label, items, pathname, onNavigate }) {
         });
       }
     },
-    { dependencies: [isOpen], scope: rootRef }
+    {
+      dependencies: [isOpen],
+      scope: rootRef,
+    }
   );
 
-  /* Hover only for real mouse on desktop (avoids double-toggle on touch) */
   const handlePointerEnter = (event) => {
     pointerType.current = event.pointerType;
-    if (event.pointerType === "mouse" && isDesktop()) setIsOpen(true);
+
+    if (event.pointerType === "mouse" && isDesktop()) {
+      setIsOpen(true);
+    }
   };
 
   const handlePointerLeave = (event) => {
-    if (event.pointerType === "mouse" && isDesktop()) setIsOpen(false);
+    if (event.pointerType === "mouse" && isDesktop()) {
+      setIsOpen(false);
+    }
   };
 
   const handleButtonClick = (event) => {
-    // On desktop, a mouse click on an already hover-opened menu shouldn't close it.
-    if (pointerType.current === "mouse" && isDesktop() && event.detail > 0) {
+    if (
+      pointerType.current === "mouse" &&
+      isDesktop() &&
+      event.detail > 0
+    ) {
       setIsOpen(true);
       return;
     }
+
     setIsOpen((previous) => !previous);
   };
 
   return (
     <div
       ref={rootRef}
+      data-nav-stagger
       className="relative w-full lg:w-auto"
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) close();
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          close();
+        }
       }}
       onKeyDown={(event) => {
         if (event.key === "Escape") close();
@@ -285,13 +328,13 @@ function Dropdown({ label, items, pathname, onNavigate }) {
           size={15}
           strokeWidth={2}
           aria-hidden="true"
-          className={`shrink-0 transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`
+            shrink-0 transition-transform duration-300
+            ${isOpen ? "rotate-180" : ""}
+          `}
         />
       </button>
 
-      {/* Animated wrapper: collapsed by default, GSAP controls height/opacity */}
       <div
         ref={panelRef}
         className="
@@ -325,10 +368,12 @@ function Dropdown({ label, items, pathname, onNavigate }) {
               >
                 <span
                   aria-hidden="true"
-                  className={`size-2 shrink-0 rounded-full transition-colors ${
-                    active ? "bg-red-500" : "bg-transparent"
-                  }`}
+                  className={`
+                    size-2 shrink-0 rounded-full transition-colors
+                    ${active ? "bg-red-500" : "bg-transparent"}
+                  `}
                 />
+
                 <span>{item.label}</span>
               </HeaderLink>
             );
@@ -349,6 +394,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
+  const headerRef = useRef(null);
   const menuRef = useRef(null);
   const languagePanelRef = useRef(null);
   const menuMounted = useRef(false);
@@ -361,13 +407,129 @@ export default function Header() {
 
   const handleLanguageChange = (code) => {
     setLanguageMenuOpen(false);
-    window.dispatchEvent(new CustomEvent("site-language-change", { detail: code }));
+
+    window.dispatchEvent(
+      new CustomEvent("site-language-change", {
+        detail: code,
+      })
+    );
   };
 
-  /* Mobile menu open / close ----------------------------------- */
+  /* --------------------------------------------------
+     Header entrance + main navigation stagger
+
+     Runs once when the shared Header mounts.
+     Does not depend on pathname.
+  -------------------------------------------------- */
+
+  useGSAP(
+    () => {
+      const header = headerRef.current;
+
+      if (!header) return;
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      if (prefersReducedMotion) return;
+
+      const topBar = header.querySelector(
+        '[data-header-intro="top"]'
+      );
+
+      const banner = header.querySelector(
+        '[data-header-intro="banner"]'
+      );
+
+      const navigation = header.querySelector(
+        '[data-header-intro="navigation"]'
+      );
+
+      const navItems = navigation
+        ? navigation.querySelectorAll("[data-nav-stagger]")
+        : [];
+
+      const timeline = gsap.timeline({
+        defaults: {
+          ease: "power2.out",
+        },
+      });
+
+      if (topBar) {
+        timeline.fromTo(
+          topBar,
+          { autoAlpha: 0, y: -10 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.4,
+            clearProps: "opacity,visibility,transform",
+          }
+        );
+      }
+
+      if (banner) {
+        timeline.fromTo(
+          banner,
+          { autoAlpha: 0, y: 12 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.5,
+            clearProps: "opacity,visibility,transform",
+          },
+          "-=0.15"
+        );
+      }
+
+      if (navigation) {
+        timeline.fromTo(
+          navigation,
+          { autoAlpha: 0, y: 10 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.4,
+            clearProps: "opacity,visibility,transform",
+          },
+          "-=0.15"
+        );
+      }
+
+      // Individual navigation items appear in sequence.
+      if (navItems.length) {
+        timeline.fromTo(
+          navItems,
+          {
+            autoAlpha: 0,
+            y: 12,
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.35,
+            stagger: 0.07,
+            ease: "power2.out",
+            clearProps: "opacity,visibility,transform",
+          },
+          "-=0.1"
+        );
+      }
+    },
+    {
+      scope: headerRef,
+    }
+  );
+
+  /* --------------------------------------------------
+     Mobile menu animation
+  -------------------------------------------------- */
+
   useGSAP(
     () => {
       const menu = menuRef.current;
+
       if (!menu) return;
 
       if (!menuMounted.current) {
@@ -375,7 +537,6 @@ export default function Header() {
         return;
       }
 
-      // The desktop layout is always visible, nothing to animate.
       if (isDesktop()) return;
 
       const children = Array.from(menu.children);
@@ -412,13 +573,19 @@ export default function Header() {
         });
       }
     },
-    { dependencies: [mobileMenuOpen] }
+    {
+      dependencies: [mobileMenuOpen],
+    }
   );
 
-  /* Language dropdown ------------------------------------------ */
+  /* --------------------------------------------------
+     Language dropdown animation
+  -------------------------------------------------- */
+
   useGSAP(
     () => {
       const panel = languagePanelRef.current;
+
       if (!panel) return;
 
       if (!languageMounted.current) {
@@ -429,7 +596,11 @@ export default function Header() {
       if (languageMenuOpen) {
         gsap.fromTo(
           panel,
-          { autoAlpha: 0, y: -8, scale: 0.97 },
+          {
+            autoAlpha: 0,
+            y: -8,
+            scale: 0.97,
+          },
           {
             autoAlpha: 1,
             y: 0,
@@ -451,36 +622,60 @@ export default function Header() {
         });
       }
     },
-    { dependencies: [languageMenuOpen] }
+    {
+      dependencies: [languageMenuOpen],
+    }
   );
 
-  /* When resizing to desktop, drop GSAP inline styles and reset state */
+  /* --------------------------------------------------
+     Reset mobile menu when resizing to desktop
+  -------------------------------------------------- */
+
   useEffect(() => {
     const mql = window.matchMedia(DESKTOP_QUERY);
 
     const handleChange = (event) => {
       if (!event.matches) return;
+
       setMobileMenuOpen(false);
 
       const menu = menuRef.current;
-      if (menu) gsap.set([menu, ...menu.children], { clearProps: "all" });
+
+      if (menu) {
+        gsap.set([menu, ...menu.children], {
+          clearProps: "all",
+        });
+      }
     };
 
     mql.addEventListener("change", handleChange);
-    return () => mql.removeEventListener("change", handleChange);
+
+    return () => {
+      mql.removeEventListener("change", handleChange);
+    };
   }, []);
 
-  /* Escape closes the language menu */
+  /* Escape closes the language menu. */
+
   useEffect(() => {
     if (!languageMenuOpen) return;
 
     const onKeyDown = (event) => {
-      if (event.key === "Escape") setLanguageMenuOpen(false);
+      if (event.key === "Escape") {
+        setLanguageMenuOpen(false);
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [languageMenuOpen]);
+
+  /* --------------------------------------------------
+     Navigation styles
+  -------------------------------------------------- */
 
   const mainLinkClass = (href) => {
     const active = isActiveRoute(pathname, href);
@@ -501,12 +696,22 @@ export default function Header() {
   const utilityLinkClass =
     "flex items-center gap-1.5 font-semibold transition-colors hover:text-green-200";
 
+  /* --------------------------------------------------
+     Header JSX
+  -------------------------------------------------- */
+
   return (
-    <header className="relative z-40 w-full bg-[#1e8449] text-white">
+    <header
+      ref={headerRef}
+      className="relative z-40 w-full bg-[#1e8449] text-white"
+    >
       {/* Top information bar */}
-      <div className="border-b border-white/15">
+
+      <div
+        data-header-intro="top"
+        className="border-b border-white/15"
+      >
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-3 sm:flex-row lg:px-6">
-          {/* Social links */}
           <div className="flex items-center gap-1">
             {socialLinks.map(({ label, href, Icon }) => (
               <a
@@ -523,11 +728,14 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Utility navigation */}
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs sm:text-sm">
             <HeaderLink
               href="/about-us"
-              aria-current={isActiveRoute(pathname, "/about-us") ? "page" : undefined}
+              aria-current={
+                isActiveRoute(pathname, "/about-us")
+                  ? "page"
+                  : undefined
+              }
               className={utilityLinkClass}
             >
               About
@@ -535,23 +743,36 @@ export default function Header() {
 
             <HeaderLink
               href="/contact-us"
-              aria-current={isActiveRoute(pathname, "/contact-us") ? "page" : undefined}
+              aria-current={
+                isActiveRoute(pathname, "/contact-us")
+                  ? "page"
+                  : undefined
+              }
               className={utilityLinkClass}
             >
               Contact
             </HeaderLink>
 
             {/* Language menu */}
+
             <div className="relative">
               <button
                 type="button"
                 aria-expanded={languageMenuOpen}
                 aria-haspopup="true"
-                onClick={() => setLanguageMenuOpen((previous) => !previous)}
+                onClick={() =>
+                  setLanguageMenuOpen((previous) => !previous)
+                }
                 className="flex items-center gap-2 transition-colors hover:text-green-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
               >
-                <Languages size={16} strokeWidth={2} aria-hidden="true" />
+                <Languages
+                  size={16}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
+
                 <strong>Language</strong>
+
                 <ChevronDown
                   size={13}
                   aria-hidden="true"
@@ -580,7 +801,9 @@ export default function Header() {
                     key={language.code}
                     type="button"
                     tabIndex={languageMenuOpen ? 0 : -1}
-                    onClick={() => handleLanguageChange(language.code)}
+                    onClick={() =>
+                      handleLanguageChange(language.code)
+                    }
                     className="block w-full px-4 py-2.5 text-left transition-colors hover:bg-green-50 hover:text-green-800 focus-visible:bg-green-50 focus-visible:outline-none"
                   >
                     {language.label}
@@ -589,12 +812,18 @@ export default function Header() {
               </div>
             </div>
 
-            <HeaderLink href="/contact-us" className={utilityLinkClass}>
+            <HeaderLink
+              href="/contact-us"
+              className={utilityLinkClass}
+            >
               <BriefcaseBusiness size={16} aria-hidden="true" />
               <strong>Careers</strong>
             </HeaderLink>
 
-            <HeaderLink href="/contact-us" className={utilityLinkClass}>
+            <HeaderLink
+              href="/contact-us"
+              className={utilityLinkClass}
+            >
               <HeartHandshake size={17} aria-hidden="true" />
               <strong>Become Volunteer</strong>
             </HeaderLink>
@@ -603,13 +832,18 @@ export default function Header() {
       </div>
 
       {/* Responsive header images */}
-      <div className="w-full overflow-hidden bg-white">
+
+      <div
+        data-header-intro="banner"
+        className="w-full overflow-hidden bg-white"
+      >
         <img
           src={mobileHeaderImage}
           alt="Be The Change Foundation"
           className="h-auto w-full object-cover md:hidden"
           fetchPriority="high"
         />
+
         <img
           src={desktopHeaderImage}
           alt="Be The Change Foundation"
@@ -619,12 +853,15 @@ export default function Header() {
       </div>
 
       {/* Main navigation */}
+
       <nav
+        data-header-intro="navigation"
         aria-label="Main navigation"
         className="border-y border-white/70 bg-[#1e8449]"
       >
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-4 lg:justify-center lg:px-6">
           {/* Mobile brand */}
+
           <HeaderLink
             href="/"
             onClick={closeMobileMenu}
@@ -634,12 +871,19 @@ export default function Header() {
           </HeaderLink>
 
           {/* Mobile menu toggle */}
+
           <button
             type="button"
-            aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
+            aria-label={
+              mobileMenuOpen
+                ? "Close navigation"
+                : "Open navigation"
+            }
             aria-expanded={mobileMenuOpen}
             aria-controls="main-navigation-links"
-            onClick={() => setMobileMenuOpen((previous) => !previous)}
+            onClick={() =>
+              setMobileMenuOpen((previous) => !previous)
+            }
             className="my-2 flex h-10 w-11 items-center justify-center rounded-md border border-white/60 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:hidden"
           >
             {mobileMenuOpen ? (
@@ -649,7 +893,8 @@ export default function Header() {
             )}
           </button>
 
-          {/* Navigation links (GSAP animates height + opacity on mobile only) */}
+          {/* Main navigation items */}
+
           <div
             ref={menuRef}
             id="main-navigation-links"
@@ -662,9 +907,14 @@ export default function Header() {
             {mainLinks.map(({ label, href }) => (
               <HeaderLink
                 key={href}
+                data-nav-stagger
                 href={href}
                 onClick={closeMobileMenu}
-                aria-current={isActiveRoute(pathname, href) ? "page" : undefined}
+                aria-current={
+                  isActiveRoute(pathname, href)
+                    ? "page"
+                    : undefined
+                }
                 className={mainLinkClass(href)}
               >
                 {label}
@@ -686,23 +936,35 @@ export default function Header() {
             />
 
             <HeaderLink
+              data-nav-stagger
               href="/contact-us"
               onClick={closeMobileMenu}
-              aria-current={isActiveRoute(pathname, "/contact-us") ? "page" : undefined}
+              aria-current={
+                isActiveRoute(pathname, "/contact-us")
+                  ? "page"
+                  : undefined
+              }
               className={mainLinkClass("/contact-us")}
             >
               Contact Us
             </HeaderLink>
 
             {/* Donate button */}
+
             <div className="flex justify-center px-4 py-3 lg:pl-3 lg:pr-0">
               <HeaderLink
+                data-nav-stagger
                 href="https://razorpay.me/@bethechangefoundation5072"
                 external
                 onClick={closeMobileMenu}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-8 py-2.5 text-sm font-bold text-white transition duration-200 hover:scale-105 hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                <Heart size={18} strokeWidth={2.5} aria-hidden="true" />
+                <Heart
+                  size={18}
+                  strokeWidth={2.5}
+                  aria-hidden="true"
+                />
+
                 <span>Donate</span>
               </HeaderLink>
             </div>

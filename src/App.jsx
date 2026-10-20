@@ -12,6 +12,7 @@ import OurPrograms from "./pages/OurPrograms";
 import ContactUs from "./pages/contact_us/ContactUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import GlobalAnimations from "./components/animations/GlobalAnimations";
 
 
 
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <>
+      <GlobalAnimations />
       <Header />
 
       <main className="min-h-screen">
