@@ -9,6 +9,7 @@ import OurVision from "./pages/our_vision/OurVision";
 import AreaOfWork from "./pages/areas_of_work/AreaOfWork";
 import AreaDetailPage from "./pages/areas_of_work/AreaDetailPage";
 import OurPrograms from "./pages/OurPrograms";
+import ContactUs from "./pages/contact_us/ContactUs";
 
 
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/area-of-work" element={<AreaOfWork />} />
             <Route path="/area-of-work/:slug" element={<AreaDetailPage />} />
             <Route path="/our-programs" element={<OurPrograms />} />
+            <Route path="/contact-us" element={<ContactUs />} />
 
             <Route path="*" element={<NotFound />} />
         </Routes>

@@ -50,6 +50,7 @@ const projects = [
   { label: "Tree Plantation", href: "#" },
   { label: "Educational Awareness", href: "#" },
   { label: "Our Programs", href: "/our-programs" },
+  {label : "Krushisetu", href : "https://www.krushisetu.org"}
 ];
 
 const socialLinks = [
