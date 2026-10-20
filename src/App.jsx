@@ -5,6 +5,10 @@ import Home from "./pages/home/Home";
 import AboutUs from "./pages/about/AboutUs";
 import OurMission from "./pages/our_mission/OurMission";
 import NotFound from "./pages/NotFound";
+import OurVision from "./pages/our_vision/OurVision";
+import AreaOfWork from "./pages/areas_of_work/AreaOfWork";
+import AreaDetailPage from "./pages/areas_of_work/AreaDetailPage";
+import OurPrograms from "./pages/OurPrograms";
 
 
 
@@ -20,6 +24,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/our-mission" element={<OurMission />} />
+            <Route path="/our-vision" element={<OurVision />} />
+            <Route path="/area-of-work" element={<AreaOfWork />} />
+            <Route path="/area-of-work/:slug" element={<AreaDetailPage />} />
+            <Route path="/our-programs" element={<OurPrograms />} />
 
             <Route path="*" element={<NotFound />} />
         </Routes>

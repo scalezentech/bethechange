@@ -1,6 +1,7 @@
 import HeroSlider from "../../components/common/HeroSlider";
 import heroBgImage from "../../assets/images/hero/hero-two-bg.jpg";
 import sectionTitleBgTwo from "../../assets/images/background/section-title-bg-two.png";
+import { Link } from "react-router-dom";
 
 const SITE = "https://bethechange.org.in";
 
@@ -51,8 +52,8 @@ export default function HomePage() {
           </div>
 
           <div className="mx-auto mt-8 grid max-w-5xl gap-5 sm:grid-cols-2 lg:mt-7">
-            <a
-              href={`${SITE}/areas-of-work.html`}
+            <Link
+              to={"/area-of-work"}
               className="group flex min-h-29 items-center justify-between gap-4 rounded-xl bg-[#0875e1] px-6 py-5 text-white transition hover:bg-blue-700 sm:px-7"
             >
               <div>
@@ -64,10 +65,10 @@ export default function HomePage() {
               <span className="shrink-0 text-2xl transition-transform group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </Link>
 
-            <a
-              href={`${SITE}/about-us.html`}
+            <Link
+              to={"/about-us"}
               className="group flex min-h-29 items-center justify-between gap-4 rounded-xl bg-[#20963d] px-6 py-5 text-white transition hover:bg-green-800 sm:px-7"
             >
               <div>
@@ -79,7 +80,7 @@ export default function HomePage() {
               <span className="shrink-0 text-2xl transition-transform group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
