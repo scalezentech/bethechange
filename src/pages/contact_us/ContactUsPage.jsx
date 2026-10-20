@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   MapPin,
@@ -10,7 +11,12 @@ import {
   CheckCircle2,
   AlertCircle,
   Navigation,
+  X,
+  Mail,
+  UserRound,
 } from "lucide-react";
+
+import { sendEmail } from "../../utils/emailSender.js";
 
 
 const foundationAddress =
@@ -54,72 +60,93 @@ const inputClass =
   "w-full rounded-xl border border-stone-200 bg-[#fcfbf8] px-4 py-3.5 text-sm text-stone-800 outline-none transition placeholder:text-stone-400 focus:border-emerald-800 focus:bg-white focus:ring-2 focus:ring-emerald-800/10";
 
 const ContactUs = () => {
-  const [formStatus, setFormStatus] = useState({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [popup, setPopup] = useState({
+    isOpen: false,
     type: "",
+    title: "",
     message: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const closePopup = () => {
+    setPopup({
+      isOpen: false,
+      type: "",
+      title: "",
+      message: "",
+    });
+  };
+
+  const showPopup = (type, title, message) => {
+    setPopup({
+      isOpen: true,
+      type,
+      title,
+      message,
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setFormStatus({
-      type: "",
-      message: "",
-    });
+    if (isSubmitting) return;
 
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const payload = {
-      name: formData.get("name")?.toString().trim(),
-      email: formData.get("email")?.toString().trim(),
-      mobile: formData.get("mobile")?.toString().trim(),
-    };
+    const name = formData.get("name")?.toString().trim() || "";
+    const email = formData.get("email")?.toString().trim() || "";
+    const mobile = formData.get("mobile")?.toString().trim() || "";
+    const query = formData.get("query")?.toString().trim() || "";
 
-    const contactApiUrl = import.meta.env.VITE_CONTACT_API_URL;
+    if (!name || !email || !mobile || !query) {
+      showPopup(
+        "error",
+        "Missing information",
+        "Please complete all the required fields before submitting your enquiry."
+      );
+      return;
+    }
 
-    // Do not claim a message was delivered without a configured API.
-    if (!contactApiUrl) {
-      setFormStatus({
-        type: "error",
-        message:
-          "Online form submission has not been connected yet. Please call +91 9067498721 to contact the foundation.",
-      });
-
+    if (query.length > 3000) {
+      showPopup(
+        "error",
+        "Message too long",
+        "Please keep your enquiry within 3,000 characters."
+      );
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(contactApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+      await sendEmail({
+        subject: "New Contact Enquiry - Be The Change Foundation",
+        replyTo: email,
+        data: {
+          Name: name,
+          Email: email,
+          Mobile: mobile,
+          Query: query,
         },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Unable to submit your details.");
-      }
-
-      setFormStatus({
-        type: "success",
-        message:
-          "Your details have been submitted successfully. Thank you for contacting the foundation.",
       });
 
       form.reset();
-    } catch {
-      setFormStatus({
-        type: "error",
-        message:
-          "We could not submit your details. Please try again later or call +91 9067498721.",
-      });
+
+      showPopup(
+        "success",
+        "Enquiry submitted!",
+        "Thank you for reaching out to Be The Change Foundation. Your enquiry has been submitted successfully."
+      );
+    } catch (error) {
+      console.error("Contact form submission failed:", error);
+
+      showPopup(
+        "error",
+        "Submission unsuccessful",
+        "We couldn't submit your enquiry right now. Please try again later or contact the foundation directly at +91 9067498721."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -127,7 +154,6 @@ const ContactUs = () => {
 
   return (
     <>
-
 
       <main className="min-h-screen bg-[#fbfaf6] text-stone-800">
         {/* HERO */}
@@ -260,7 +286,7 @@ const ContactUs = () => {
 
                     <p className="mt-1 text-sm leading-6 text-stone-600">
                       Reach out by phone or use the contact form to share
-                      your details with the foundation.
+                      your details and enquiry with the foundation.
                     </p>
                   </div>
                 </div>
@@ -278,8 +304,8 @@ const ContactUs = () => {
                   </h2>
 
                   <p className="mt-4 text-sm leading-7 text-stone-500">
-                    Fill in the required details below so the foundation
-                    can identify and respond to your enquiry.
+                    Fill in the details below and tell us how we can help.
+                    Our team will be able to review your enquiry.
                   </p>
 
                   <p className="mt-3 text-xs text-stone-500">
@@ -303,16 +329,23 @@ const ContactUs = () => {
                       <span className="ml-1 text-[#9b3435]">*</span>
                     </label>
 
-                    <input
-                      id="contact-name"
-                      name="name"
-                      type="text"
-                      autoComplete="name"
-                      placeholder="Enter your complete name"
-                      required
-                      maxLength={120}
-                      className={inputClass}
-                    />
+                    <div className="relative">
+                      <UserRound
+                        size={18}
+                        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      />
+
+                      <input
+                        id="contact-name"
+                        name="name"
+                        type="text"
+                        autoComplete="name"
+                        placeholder="Enter your complete name"
+                        required
+                        maxLength={120}
+                        className={`${inputClass} pl-11`}
+                      />
+                    </div>
                   </div>
 
                   {/* EMAIL */}
@@ -325,16 +358,23 @@ const ContactUs = () => {
                       <span className="ml-1 text-[#9b3435]">*</span>
                     </label>
 
-                    <input
-                      id="contact-email"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      placeholder="you@example.com"
-                      required
-                      maxLength={254}
-                      className={inputClass}
-                    />
+                    <div className="relative">
+                      <Mail
+                        size={18}
+                        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      />
+
+                      <input
+                        id="contact-email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        placeholder="you@example.com"
+                        required
+                        maxLength={254}
+                        className={`${inputClass} pl-11`}
+                      />
+                    </div>
                   </div>
 
                   {/* MOBILE NUMBER */}
@@ -363,47 +403,47 @@ const ContactUs = () => {
                     />
                   </div>
 
-                  {/* SUBMISSION STATUS */}
-                  {formStatus.message && (
-                    <div
-                      role="status"
-                      aria-live="polite"
-                      className={`flex items-start gap-3 rounded-xl border p-4 text-sm leading-6 ${
-                        formStatus.type === "success"
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-                          : "border-red-200 bg-red-50 text-red-800"
-                      }`}
+                  {/* QUERY / ENQUIRY */}
+                  <div>
+                    <label
+                      htmlFor="contact-query"
+                      className="mb-2 block text-sm font-semibold text-stone-700"
                     >
-                      {formStatus.type === "success" ? (
-                        <CheckCircle2
-                          size={19}
-                          className="mt-0.5 shrink-0"
-                        />
-                      ) : (
-                        <AlertCircle
-                          size={19}
-                          className="mt-0.5 shrink-0"
-                        />
-                      )}
+                      Your Query
+                      <span className="ml-1 text-[#9b3435]">*</span>
+                    </label>
 
-                      <p>{formStatus.message}</p>
-                    </div>
-                  )}
+                    <textarea
+                      id="contact-query"
+                      name="query"
+                      rows={5}
+                      required
+                      minLength={5}
+                      maxLength={3000}
+                      placeholder="Tell us about your question, enquiry, or how you'd like to collaborate..."
+                      className={`${inputClass} min-h-36 resize-y`}
+                    />
 
-                  {/* SUBMIT */}
+                    <p className="mt-2 text-xs leading-5 text-stone-500">
+                      Please provide enough detail for us to understand
+                      your enquiry. Maximum 3,000 characters.
+                    </p>
+                  </div>
+
+                  {/* SUBMIT BUTTON */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-900 px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-800 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                   >
-                    {isSubmitting ? "Submitting..." : "Submit Now"}
+                    {isSubmitting ? "Submitting..." : "Submit Enquiry"}
 
                     {!isSubmitting && <Send size={16} />}
                   </button>
 
                   <p className="text-xs leading-6 text-stone-500">
-                    Your details should be handled securely and only used
-                    for the purpose of responding to your enquiry.
+                    Your information will be submitted to the foundation
+                    so your enquiry can be reviewed and answered.
                   </p>
                 </form>
               </div>
@@ -441,7 +481,6 @@ const ContactUs = () => {
               </a>
             </div>
 
-            {/* MAP EMBED */}
             <div className="overflow-hidden rounded-3xl border border-stone-200 bg-white p-2 shadow-sm">
               <iframe
                 title="Be The Change Foundation location in Khandala, Shrirampur"
@@ -490,6 +529,121 @@ const ContactUs = () => {
         </section>
       </main>
 
+
+      {/* CUSTOM SUBMISSION POPUP */}
+      {popup.isOpen && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#10271f]/60 px-4 py-6 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              closePopup();
+            }
+          }}
+        >
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="contact-popup-title"
+            aria-describedby="contact-popup-description"
+            className="relative w-full max-w-md animate-[popupIn_220ms_ease-out] overflow-hidden rounded-3xl border border-stone-200 bg-[#fbfaf6] p-7 text-center shadow-2xl sm:p-9"
+          >
+            <button
+              type="button"
+              onClick={closePopup}
+              aria-label="Close popup"
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-800"
+            >
+              <X size={19} />
+            </button>
+
+            <div
+              className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${
+                popup.type === "success"
+                  ? "bg-emerald-100 text-emerald-800"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {popup.type === "success" ? (
+                <CheckCircle2 size={32} strokeWidth={1.8} />
+              ) : (
+                <AlertCircle size={32} strokeWidth={1.8} />
+              )}
+            </div>
+
+            <p className="mt-5 text-xs font-bold uppercase tracking-[0.2em] text-[#9b3435]">
+              Be The Change Foundation
+            </p>
+
+            <h2
+              id="contact-popup-title"
+              className="mt-3 font-serif text-3xl font-medium text-[#183e31]"
+            >
+              {popup.title}
+            </h2>
+
+            <p
+              id="contact-popup-description"
+              className="mx-auto mt-4 max-w-sm text-sm leading-7 text-stone-600"
+            >
+              {popup.message}
+            </p>
+
+            {popup.type === "success" && (
+              <div className="mt-5 rounded-2xl border border-[#d9e5d8] bg-[#edf2e9] px-4 py-3 text-left">
+                <p className="text-sm font-semibold text-[#183e31]">
+                  What's next?
+                </p>
+
+                <p className="mt-1 text-xs leading-6 text-stone-600">
+                  Thank you for getting in touch. Please keep an eye on
+                  your email or phone for a response from the foundation.
+                </p>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={closePopup}
+              autoFocus
+              className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-900 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
+            >
+              {popup.type === "success" ? "Done" : "Close"}
+              <ArrowUpRight size={16} />
+            </button>
+
+            {popup.type === "error" && (
+              <a
+                href="tel:+919067498721"
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-900 hover:text-[#9b3435]"
+              >
+                <Phone size={15} />
+                Call +91 9067498721
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* POPUP ANIMATION */}
+      <style>{`
+        @keyframes popupIn {
+          from {
+            opacity: 0;
+            transform: translateY(12px) scale(0.97);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .animate-\\[popupIn_220ms_ease-out\\] {
+            animation: none !important;
+          }
+        }
+      `}</style>
     </>
   );
 };
