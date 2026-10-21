@@ -1,5 +1,6 @@
 
 import { ExternalLink } from "lucide-react";
+import TypingHeading from "./TypingHeading";
 
 export default function VoiceOfChange({
   videoId,
@@ -24,6 +25,7 @@ export default function VoiceOfChange({
       <div className="mx-auto grid max-w-[1120px] items-center gap-6 sm:gap-8 lg:grid-cols-12 lg:gap-7">
         {/* Video */}
         <div
+          data-gsap-reveal
           className={`min-w-0 lg:col-span-7 ${
             videoOnLeft ? "lg:order-1" : "lg:order-2"
           }`}
@@ -31,7 +33,7 @@ export default function VoiceOfChange({
           <div
             className={`relative mx-auto w-full overflow-hidden rounded-2xl bg-black shadow-[0_16px_35px_rgba(15,23,42,0.16)] ${
               isVertical
-                ? "max-w-[360px] aspect-[9/16]"
+                ? "aspect-[9/16] max-w-[360px]"
                 : "aspect-video"
             }`}
           >
@@ -55,31 +57,46 @@ export default function VoiceOfChange({
 
         {/* Testimonial card */}
         <div
+          data-gsap-reveal
           className={`min-w-0 lg:col-span-5 ${
             videoOnLeft ? "lg:order-2" : "lg:order-1"
           }`}
         >
           <article className="h-full rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 lg:p-8">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-red-500">
+            <p
+              data-gsap-reveal
+              className="text-[11px] font-semibold uppercase tracking-wide text-red-500"
+            >
               {eyebrow}
             </p>
 
-            <h2 className="mt-4 text-2xl font-bold leading-tight tracking-tight text-[#243244] sm:text-3xl">
-              {title}
-            </h2>
+            <TypingHeading
+              as="h2"
+              text={title}
+              className="mt-4 text-2xl font-bold leading-tight tracking-tight text-[#243244] sm:text-3xl"
+              speed={0.035}
+              delay={0.1}
+              triggerOnView
+            />
 
-            <div className="mt-4 space-y-4 text-sm leading-[1.85] text-[#626262]">
+            <div
+              data-gsap-stagger
+              className="mt-4 space-y-4 text-sm leading-[1.85] text-[#626262]"
+            >
               {paragraphs.filter(Boolean).map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+                <p key={index} data-gsap-item>
+                  {paragraph}
+                </p>
               ))}
             </div>
 
             {videoLink && (
               <a
+                data-gsap-reveal
                 href={videoLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-green-700 transition hover:text-green-900"
+                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-green-700 transition hover:text-green-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
               >
                 {linkText}
                 <ExternalLink size={15} aria-hidden="true" />

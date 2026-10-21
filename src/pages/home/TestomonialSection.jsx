@@ -5,16 +5,22 @@ import sep6Video from "../../assets/images/initiatives/6sep2026/v1.mp4"
 import sep6Thumbnail from "../../assets/images/initiatives/6sep2026/C3.jpeg"
 import entrepreneurVideo from "../../assets/images/initiatives/27sep2026/reel.mp4"
 import entrepreneurThumbnail from "../../assets/images/initiatives/27sep2026/s (1).jpeg"
+import TypingHeading from "../../components/common/TypingHeading";
 
 export default function TestimonialsSection() {
     return (
         <>
             <header className="bg-[#fafafa] px-4 pt-10 text-center sm:pt-14">
-                <h2 className="text-3xl font-bold text-[#243244] sm:text-4xl">
-                    Voices of Change
-                </h2>
+                <TypingHeading
+                    as="h2"
+                    text={"VOices of Change"}
+                    className="text-3xl font-bold text-[#243244] sm:text-4xl"
+                    speed={0.035}
+                    delay={0.1}
+                    triggerOnView
+                />
 
-                <p className="mt-3 text-sm text-[#626262] sm:text-base">
+                <p data-gsap-reveal className="mt-3 text-sm text-[#626262] sm:text-base">
                     A teacher sharing heartfelt experiences from our Mumbai event
                 </p>
             </header>

@@ -708,7 +708,7 @@ const RecentShowcaseInitiative = () => {
             />
 
             <RecentInitiative
-                title="Educational Awareness Campaign 2023 at Kopargaon"
+                title={<>Educational Awareness Campaign 2023 at Kopargaon</>}
                 videoId="Ro4FMfjCL5Q"
                 orientation="horizontal"
                 videoWidth="wide"

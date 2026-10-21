@@ -1,5 +1,7 @@
+
 import { useRef, useState } from "react";
 import { CheckCircle2, Play } from "lucide-react";
+import TypingHeading from "./TypingHeading";
 
 export default function AwardHighlights({
   videoId,
@@ -48,6 +50,7 @@ export default function AwardHighlights({
       <div className="mx-auto grid max-w-[1400px] items-center gap-7 lg:grid-cols-12 lg:gap-10">
         {/* Video */}
         <div
+          data-gsap-reveal
           className={`min-w-0 lg:col-span-7 ${
             videoOnLeft ? "lg:order-1" : "lg:order-2"
           }`}
@@ -80,7 +83,7 @@ export default function AwardHighlights({
                     type="button"
                     onClick={handlePlay}
                     aria-label={`Play ${videoTitle}`}
-                    className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 transition hover:bg-black/20"
+                    className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 transition hover:bg-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                   >
                     <span className="flex h-16 w-16 items-center justify-center rounded-full bg-black/60 text-white shadow-lg transition-transform hover:scale-110">
                       <Play
@@ -113,6 +116,7 @@ export default function AwardHighlights({
 
         {/* Award information */}
         <div
+          data-gsap-reveal
           className={`min-w-0 lg:col-span-5 ${
             videoOnLeft ? "lg:order-2" : "lg:order-1"
           }`}
@@ -122,21 +126,35 @@ export default function AwardHighlights({
               {organization}
             </span>
 
-            <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-[#353535] sm:text-4xl">
-              {title}
-            </h2>
+            <TypingHeading
+              as="h2"
+              text={title}
+              className="mt-4 text-3xl font-bold leading-tight tracking-tight text-[#353535] sm:text-4xl"
+              speed={0.035}
+              delay={0.1}
+              triggerOnView
+            />
 
-            <div className="mt-4 space-y-3 text-sm leading-7 text-[#666666] sm:text-[15px]">
+            <div
+              data-gsap-stagger
+              className="mt-4 space-y-3 text-sm leading-7 text-[#666666] sm:text-[15px]"
+            >
               {paragraphs.filter(Boolean).map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+                <p key={index} data-gsap-item>
+                  {paragraph}
+                </p>
               ))}
             </div>
 
             {highlights.length > 0 && (
-              <ul className="mt-5 space-y-2.5">
-                {highlights.map((highlight) => (
+              <ul
+                data-gsap-stagger
+                className="mt-5 space-y-2.5"
+              >
+                {highlights.map((highlight, index) => (
                   <li
-                    key={highlight}
+                    key={`${highlight}-${index}`}
+                    data-gsap-item
                     className="flex items-start gap-2 text-sm leading-5 text-[#666666] sm:text-[15px]"
                   >
                     <CheckCircle2

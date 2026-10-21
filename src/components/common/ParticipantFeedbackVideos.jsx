@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import TypingHeading from "./TypingHeading";
 
 export default function ParticipantFeedbackVideos({
   title = "Participant Feedback Videos",
@@ -19,14 +20,25 @@ export default function ParticipantFeedbackVideos({
   return (
     <section className="bg-white px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
       <div className="mx-auto max-w-[1200px]">
-        <h2 className="mb-6 text-center text-2xl font-bold leading-tight text-[#353535] sm:text-3xl">
-          {title}
-        </h2>
+        <div className="mb-6 text-center">
+          <TypingHeading
+            as="h2"
+            text={title}
+            className="text-2xl font-bold leading-tight text-[#353535] sm:text-3xl"
+            speed={0.035}
+            delay={0.1}
+            triggerOnView
+          />
+        </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          data-gsap-stagger
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {displayedVideos.map((video, index) => (
             <div
               key={video.id || video.videoId || index}
+              data-gsap-item
               className="min-w-0 overflow-hidden rounded-xl bg-black shadow-[0_4px_14px_rgba(0,0,0,0.10)] transition-shadow duration-300 hover:shadow-[0_8px_22px_rgba(0,0,0,0.16)]"
             >
               <div className="relative aspect-video w-full">
@@ -36,7 +48,7 @@ export default function ParticipantFeedbackVideos({
                     title={video.title || `${title} ${index + 1}`}
                     className="absolute inset-0 h-full w-full border-0"
                     loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; "
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
@@ -51,7 +63,10 @@ export default function ParticipantFeedbackVideos({
         </div>
 
         {videos.length > visibleCount && (
-          <div className="mt-8 flex justify-center">
+          <div
+            data-gsap-reveal
+            className="mt-8 flex justify-center"
+          >
             <button
               type="button"
               onClick={() => setShowAll((current) => !current)}
@@ -61,12 +76,12 @@ export default function ParticipantFeedbackVideos({
               {showAll ? (
                 <>
                   View Less
-                  <ChevronUp size={18} />
+                  <ChevronUp size={18} aria-hidden="true" />
                 </>
               ) : (
                 <>
                   View More ({videos.length - visibleCount})
-                  <ChevronDown size={18} />
+                  <ChevronDown size={18} aria-hidden="true" />
                 </>
               )}
             </button>

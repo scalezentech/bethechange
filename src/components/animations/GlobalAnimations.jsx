@@ -8,20 +8,18 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 export default function GlobalAnimations() {
   const { pathname } = useLocation();
 
-  useGSAP(
+  const { contextSafe } = useGSAP(
     () => {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
-      // Respect the user's reduced-motion preference.
+      // Respect reduced-motion preferences.
       if (prefersReducedMotion) {
-        ScrollTrigger.refresh();
         return;
       }
 
       // 1. Page introduction animations.
-      // These run when the page is rendered, not on scroll.
       const pageIntro = gsap.utils.toArray("[data-gsap-intro]");
 
       if (pageIntro.length > 0) {
@@ -35,26 +33,74 @@ export default function GlobalAnimations() {
         });
       }
 
-      // 2. Reveal elements when they enter the viewport.
-      gsap.utils
-        .toArray("[data-gsap-reveal]")
-        .forEach((element) => {
-          gsap.from(element, {
+      // 2. Create an individual reveal animation.
+      // contextSafe ensures animations created by image load
+      // callbacks are also managed by the GSAP context.
+      const createReveal = contextSafe((element, refreshAfter = false) => {
+        if (!element.isConnected) return;
+
+        gsap.fromTo(
+          element,
+          {
             autoAlpha: 0,
             y: 28,
-            duration: 0.7,
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.65,
             ease: "power2.out",
             clearProps: "opacity,visibility,transform",
             scrollTrigger: {
               trigger: element,
-              start: "top 60%",
-              end : "top 40%",
+              start: "top 90%",
               once: true,
+              invalidateOnRefresh: true,
             },
-          });
-        });
+          }
+        );
 
-      // 3. Stagger children when their container enters the viewport.
+        // Recalculate positions after a delayed image has loaded.
+        if (refreshAfter) {
+          requestAnimationFrame(() => {
+            ScrollTrigger.refresh();
+          });
+        }
+      });
+
+      // 3. Reveal elements individually.
+      gsap.utils.toArray("[data-gsap-reveal]").forEach((element) => {
+        const image = element.querySelector("img");
+
+        // If this element contains an image that hasn't loaded,
+        // wait before creating its ScrollTrigger.
+        if (image && !image.complete) {
+          gsap.set(element, {
+            autoAlpha: 0,
+            y: 28,
+          });
+
+          const handleImageReady = () => {
+            if (!element.isConnected) return;
+
+            createReveal(element, true);
+          };
+
+          image.addEventListener("load", handleImageReady, {
+            once: true,
+          });
+
+          image.addEventListener("error", handleImageReady, {
+            once: true,
+          });
+
+          return;
+        }
+
+        createReveal(element);
+      });
+
+      // 4. Stagger children when their container enters the viewport.
       gsap.utils
         .toArray("[data-gsap-stagger]")
         .forEach((container) => {
@@ -79,7 +125,7 @@ export default function GlobalAnimations() {
           });
         });
 
-      // Recalculate trigger positions after setting up animations.
+      // Calculate initial positions after registering the triggers.
       ScrollTrigger.refresh();
     },
     {

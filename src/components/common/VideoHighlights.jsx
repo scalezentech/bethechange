@@ -1,4 +1,3 @@
-
 import {
   Award,
   Users,
@@ -7,15 +6,18 @@ import {
   Sun,
   CalendarDays,
   Trophy,
-  Play,
 } from "lucide-react";
+
+import TypingHeading from "./TypingHeading";
 
 const defaultVideos = [
   {
     id: "M2se98GU4SU",
+    title: "Rajya Adarsh Shikshak Puraskar 2025 - Video Highlight 1",
   },
   {
     id: "Nyx0SLbtNbo",
+    title: "Rajya Adarsh Shikshak Puraskar 2025 - Video Highlight 2",
   },
 ];
 
@@ -47,13 +49,16 @@ const defaultHighlights = [
   },
 ];
 
-function VideoCard({ video }) {
+function VideoCard({ video, index }) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-slate-200/70 bg-white transition duration-300 shadow-lg">
+    <div
+      data-gsap-item
+      className="group overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-lg transition duration-300 hover:shadow-xl"
+    >
       <div className="relative aspect-video w-full bg-black">
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${video.id}`}
-          title={video.title}
+          title={video.title || `Event highlight video ${index + 1}`}
           className="absolute inset-0 h-full w-full border-0"
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -67,7 +72,10 @@ function VideoCard({ video }) {
 
 function EventStat({ value, label, icon: Icon }) {
   return (
-    <div className="flex min-w-0 items-center gap-2 rounded-lg bg-white/70 shadow-lg px-2.5 py-3 sm:gap-3 sm:px-3">
+    <div
+      data-gsap-item
+      className="flex min-w-0 items-center gap-2 rounded-lg bg-white/70 px-2.5 py-3 shadow-lg sm:gap-3 sm:px-3"
+    >
       {Icon && (
         <Icon
           size={19}
@@ -80,6 +88,7 @@ function EventStat({ value, label, icon: Icon }) {
         <p className="text-xl font-extrabold leading-tight text-blue-600 sm:text-2xl">
           {value}
         </p>
+
         <p className="mt-1 text-[10px] leading-4 text-slate-600 sm:text-xs">
           {label}
         </p>
@@ -97,14 +106,27 @@ export default function VideoHighlights({
   eventDetails = "This prestigious event celebrated the contributions of exemplary educators and witnessed the participation of over 1300 teachers from across the state.",
   highlights = defaultHighlights,
   stats = [
-    { value: "1300+", label: "Teachers Participated", icon: Users },
-    { value: "50+", label: "Awards Presented", icon: Trophy },
-    { value: "1", label: "Day Event", icon: CalendarDays },
+    {
+      value: "1300+",
+      label: "Teachers Participated",
+      icon: Users,
+    },
+    {
+      value: "50+",
+      label: "Awards Presented",
+      icon: Trophy,
+    },
+    {
+      value: "1",
+      label: "Day Event",
+      icon: CalendarDays,
+    },
   ],
 }) {
   return (
     <section className="relative isolate overflow-hidden bg-linear-to-b from-white via-[#fbfcfd] to-[#f4f6f8] px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-[68px]">
       {/* Decorative background dots */}
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0 opacity-70"
@@ -117,39 +139,60 @@ export default function VideoHighlights({
       />
 
       {/* Foreground content */}
-      <div className="relative z-10 mx-auto max-w-287">
-        {/* Section heading */}
-        <header className="mb-10 text-center sm:mb-12">
-          <h2 className="text-2xl font-bold tracking-tight text-[#344456] sm:text-3xl">
-            {heading}
-          </h2>
 
-          <div className="mx-auto mt-2 flex w-20 flex-col gap-1.5">
+      <div className="relative z-10 mx-auto max-w-[1150px]">
+        {/* Section heading */}
+
+        <header className="mb-10 text-center sm:mb-12">
+          <TypingHeading
+            as="h2"
+            text={heading}
+            className="text-2xl font-bold tracking-tight text-[#344456] sm:text-3xl"
+            speed={0.035}
+            delay={0.1}
+            triggerOnView
+          />
+
+          <div
+            data-gsap-reveal
+            className="mx-auto mt-2 flex w-20 flex-col gap-1.5"
+          >
             <span className="h-1 w-full rounded-full bg-[#20ae65]" />
             <span className="h-1 w-full rounded-full bg-[#1687ed]" />
           </div>
 
-          <p className="mt-4 text-sm leading-6 text-slate-500 sm:text-base">
+          <p
+            data-gsap-reveal
+            className="mt-4 text-sm leading-6 text-slate-500 sm:text-base"
+          >
             {subtitle}
           </p>
         </header>
 
         {/* Videos and event information */}
+
         <div className="grid items-start gap-6 lg:grid-cols-2 lg:gap-7">
           {/* Video list */}
-          <div className="min-w-0 rounded-2xl bg-white/80 p-2.5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:p-3">
-            <div className="flex flex-col gap-3.5">
-              {videos.map((video, index) => (
-                <VideoCard
-                  key={`${video.id}-${index}`}
-                  video={video}
-                />
-              ))}
-            </div>
+
+          <div
+            data-gsap-stagger
+            className="flex min-w-0 flex-col gap-3.5 rounded-2xl bg-white/80 p-2.5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:p-3"
+          >
+            {videos.map((video, index) => (
+              <VideoCard
+                key={`${video.id}-${index}`}
+                video={video}
+                index={index}
+              />
+            ))}
           </div>
 
           {/* Event details card */}
-          <article className="min-w-0 rounded-2xl border border-white bg-white p-5 shadow-[0_12px_35px_rgba(15,23,42,0.09)] sm:p-6 lg:p-7">
+
+          <article
+            data-gsap-reveal
+            className="min-w-0 rounded-2xl border border-white bg-white p-5 shadow-[0_12px_35px_rgba(15,23,42,0.09)] sm:p-6 lg:p-7"
+          >
             <h3 className="text-xl font-bold text-[#344456] sm:text-2xl">
               {eventTitle}
             </h3>
@@ -165,23 +208,30 @@ export default function VideoHighlights({
             </p>
 
             {/* Event highlights */}
+
             <h4 className="mt-6 text-sm font-bold text-[#344456] sm:text-base">
               Event Highlights
             </h4>
 
-            <ul className="mt-2 divide-y divide-slate-100">
+            <ul
+              data-gsap-stagger
+              className="mt-2 divide-y divide-slate-100"
+            >
               {highlights.map((item, index) => {
-                const Icon = item.icon;
+                const Icon = item.icon || Award;
 
                 return (
                   <li
                     key={`${item.text}-${index}`}
+                    data-gsap-item
                     className="flex items-start gap-3 py-3 text-sm leading-5 text-slate-600"
                   >
                     <Icon
                       size={16}
                       aria-hidden="true"
-                      className={`mt-0.5 shrink-0 ${item.color || "text-blue-500"}`}
+                      className={`mt-0.5 shrink-0 ${
+                        item.color || "text-blue-500"
+                      }`}
                     />
 
                     <span>{item.text}</span>
@@ -191,7 +241,11 @@ export default function VideoHighlights({
             </ul>
 
             {/* Event statistics */}
-            <div className="mt-5 grid grid-cols-3 gap-2 rounded-xl bg-linear-to-r from-slate-50 to-slate-100 shadow-lg p-2 sm:gap-2.5 sm:p-3">
+
+            <div
+              data-gsap-stagger
+              className="mt-5 grid grid-cols-3 gap-2 rounded-xl bg-linear-to-r from-slate-50 to-slate-100 p-2 shadow-lg sm:gap-2.5 sm:p-3"
+            >
               {stats.map((stat, index) => (
                 <EventStat
                   key={`${stat.label}-${index}`}
