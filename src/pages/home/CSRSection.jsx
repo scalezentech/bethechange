@@ -17,6 +17,7 @@ import {
   ArrowRight,
   ShieldCheck,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const SITE = "https://bethechange.org.in";
 
@@ -122,7 +123,7 @@ export default function CSRSection() {
             </div>
 
             <a
-              href={`${SITE}/payment`}
+              href={"https://razorpay.me/@bethechangefoundation5072"}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-flex min-h-11 items-center gap-2 font-bold text-green-800 transition-colors hover:text-green-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-700"
@@ -265,7 +266,7 @@ export default function CSRSection() {
             </p>
 
             <a
-              href={`${SITE}/payment`}
+              href={"https://razorpay.me/@bethechangefoundation5072"}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-white px-7 py-3 font-bold text-green-800 shadow-sm transition hover:bg-green-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
@@ -283,24 +284,24 @@ export default function CSRSection() {
           data-gsap-stagger
           className="mt-7 flex flex-wrap justify-center gap-4"
         >
-          <a
+          <Link
             data-gsap-item
-            href={`${SITE}/applyCSR`}
+            to={"/apply-csr"}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-bold text-white shadow-md transition hover:bg-blue-700 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
           >
             <FileText size={17} aria-hidden="true" />
             Apply for CSR
             <ArrowUpRight size={16} aria-hidden="true" />
-          </a>
+          </Link>
 
-          <a
+          <Link
             data-gsap-item
-            href={`${SITE}/whatiscsr.html`}
+            to={"/learn-about-csr"}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-3 font-bold text-slate-700 transition hover:border-green-300 hover:bg-green-50 hover:text-green-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-700"
           >
             Learn About CSR
             <ArrowRight size={17} aria-hidden="true" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

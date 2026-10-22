@@ -14,29 +14,35 @@ function waitForDocumentReady() {
   }
 
   return new Promise((resolve) => {
-    document.addEventListener("DOMContentLoaded", resolve, { once: true });
+    document.addEventListener("DOMContentLoaded", resolve, {
+      once: true,
+    });
   });
 }
 
 function waitForImage(image) {
-  if (image.complete) return Promise.resolve();
+  if (image.complete) {
+    return Promise.resolve();
+  }
 
   return new Promise((resolve) => {
     const finish = () => resolve();
+
     image.addEventListener("load", finish, { once: true });
     image.addEventListener("error", finish, { once: true });
   });
 }
 
-export default function Preloader({ onRevealStart, onComplete }) {
+export default function Preloader({
+  onRevealStart,
+  onComplete,
+}) {
   const [progress, setProgress] = useState(0);
 
   const overlayRef = useRef(null);
   const brandRef = useRef(null);
   const timelineRef = useRef(null);
 
-  // Keep the latest callbacks in refs so the loading effect runs only once,
-  // even if the parent passes new function instances.
   const onRevealStartRef = useRef(onRevealStart);
   const onCompleteRef = useRef(onComplete);
 
@@ -49,12 +55,35 @@ export default function Preloader({ onRevealStart, onComplete }) {
     let cancelled = false;
     let progressUpdatesEnabled = true;
     let scrollLocked = false;
+    let completionSignalled = false;
 
-    // Scroll lock without touching overflow, so the scrollbar never
-    // appears/disappears and the layout width never changes.
-    const preventScroll = (e) => e.preventDefault();
+    /*
+     * Signal completion only once.
+     *
+     * This function must be called after the curtain has
+     * finished exiting, not when progress first reaches 100%.
+     */
+    const completePreloader = () => {
+      if (cancelled || completionSignalled) return;
 
-    const preventScrollKeys = (e) => {
+      completionSignalled = true;
+
+      document.documentElement.dataset.preloaderComplete =
+        "true";
+
+      window.dispatchEvent(
+        new Event("site:preloader-complete")
+      );
+
+      onRevealStartRef.current?.();
+      onCompleteRef.current?.();
+    };
+
+    const preventScroll = (event) => {
+      event.preventDefault();
+    };
+
+    const preventScrollKeys = (event) => {
       const keys = [
         " ",
         "PageUp",
@@ -64,91 +93,140 @@ export default function Preloader({ onRevealStart, onComplete }) {
         "ArrowUp",
         "ArrowDown",
       ];
-      if (keys.includes(e.key)) e.preventDefault();
+
+      if (keys.includes(event.key)) {
+        event.preventDefault();
+      }
     };
 
     const lockScroll = () => {
       if (scrollLocked) return;
+
       scrollLocked = true;
-      window.addEventListener("wheel", preventScroll, { passive: false });
-      window.addEventListener("touchmove", preventScroll, { passive: false });
+
+      window.addEventListener("wheel", preventScroll, {
+        passive: false,
+      });
+
+      window.addEventListener("touchmove", preventScroll, {
+        passive: false,
+      });
+
       window.addEventListener("keydown", preventScrollKeys);
     };
 
     const unlockScroll = () => {
       if (!scrollLocked) return;
+
       scrollLocked = false;
+
       window.removeEventListener("wheel", preventScroll);
       window.removeEventListener("touchmove", preventScroll);
       window.removeEventListener("keydown", preventScrollKeys);
     };
 
     const startLoading = async () => {
-      // Start at the top and stop the browser restoring an old position.
+      /*
+       * Start at the top and disable browser scroll restoration.
+       */
       if ("scrollRestoration" in window.history) {
         window.history.scrollRestoration = "manual";
       }
+
       window.scrollTo(0, 0);
 
       setProgress(8);
 
-      // 1. Wait for the document structure.
+      /*
+       * 1. Wait for the document structure.
+       */
       await waitForDocumentReady();
+
       if (cancelled) return;
 
       setProgress(25);
 
-      // 2. Wait only for images near the initial viewport.
-      const importantImages = Array.from(document.images).filter((image) => {
-        const rect = image.getBoundingClientRect();
-        return (
-          rect.bottom >= -window.innerHeight * 0.5 &&
-          rect.top <= window.innerHeight * 1.5
-        );
-      });
+      /*
+       * 2. Wait for images near the initial viewport.
+       */
+      const importantImages = Array.from(document.images).filter(
+        (image) => {
+          const rect = image.getBoundingClientRect();
+
+          return (
+            rect.bottom >= -window.innerHeight * 0.5 &&
+            rect.top <= window.innerHeight * 1.5
+          );
+        }
+      );
 
       const imageTasks = importantImages.map(waitForImage);
 
       const fontTask = document.fonts?.ready
-        ? Promise.resolve(document.fonts.ready).catch(() => undefined)
+        ? Promise.resolve(document.fonts.ready).catch(
+            () => undefined
+          )
         : Promise.resolve();
 
       const tasks = [...imageTasks, fontTask];
       const totalTasks = tasks.length;
+
       let completedTasks = 0;
 
       setProgress(55);
 
+      /*
+       * Track loading progress without letting a single image
+       * or font block the preloader indefinitely.
+       */
       const resourceTask = Promise.all(
         tasks.map((task) =>
           task.then(() => {
             completedTasks += 1;
+
             if (cancelled || !progressUpdatesEnabled) return;
 
-            setProgress(55 + Math.round((40 * completedTasks) / totalTasks));
+            const resourceProgress =
+              totalTasks > 0
+                ? Math.round(
+                    (40 * completedTasks) / totalTasks
+                  )
+                : 40;
+
+            setProgress(55 + resourceProgress);
           })
         )
       );
 
-      // Don't let one slow resource block the site forever.
       await Promise.race([resourceTask, wait(2500)]);
+
       if (cancelled) return;
 
       progressUpdatesEnabled = false;
 
       setProgress(100);
+
       await wait(200);
+
       if (cancelled) return;
 
       const overlay = overlayRef.current;
       const brand = brandRef.current;
-      const siteContent = document.querySelector("[data-site-content]");
+      const siteContent = document.querySelector(
+        "[data-site-content]"
+      );
 
-      // Mounts the page animations (GlobalAnimations).
-      onRevealStartRef.current?.();
-
+      /*
+       * If there is no overlay, complete immediately.
+       */
       if (!overlay) {
-        onCompleteRef.current?.();
+        if (siteContent) {
+          gsap.set(siteContent, {
+            clearProps: "opacity,visibility",
+          });
+        }
+
+        completePreloader();
         return;
       }
 
@@ -156,33 +234,48 @@ export default function Preloader({ onRevealStart, onComplete }) {
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
-      // Reduced motion: no curtain animation, just show the site.
+      /*
+       * Respect the user's reduced-motion preference.
+       */
       if (prefersReducedMotion) {
         if (siteContent) {
-          gsap.set(siteContent, { clearProps: "opacity,visibility" });
+          gsap.set(siteContent, {
+            clearProps: "opacity,visibility",
+          });
         }
-        onCompleteRef.current?.();
+
+        gsap.set(overlay, {
+          clearProps: "all",
+        });
+
+        completePreloader();
         return;
       }
 
+      /*
+       * Start the exit animation.
+       *
+       * IMPORTANT:
+       * Do not dispatch the completion event before this timeline
+       * finishes. The homepage gate listens for that event.
+       */
       lockScroll();
 
       const timeline = gsap.timeline({
         onComplete: () => {
           unlockScroll();
 
-          // Re-measure scroll positions once the curtain is gone.
           ScrollTrigger.refresh();
 
-          if (!cancelled) {
-            onCompleteRef.current?.();
-          }
+          completePreloader();
         },
       });
 
       timelineRef.current = timeline;
 
-      // Brand fades up and out.
+      /*
+       * Fade the loader branding out.
+       */
       if (brand) {
         timeline.to(
           brand,
@@ -196,11 +289,18 @@ export default function Preloader({ onRevealStart, onComplete }) {
         );
       }
 
-      // Reveal page content behind the curtain.
-      // Opacity only: a transform on this wrapper would break the
-      // fixed/sticky Header and cause a snap when cleared.
+      /*
+       * Reveal the existing site wrapper behind the curtain.
+       * The homepage itself remains unmounted by PreloaderGate.
+       */
       if (siteContent) {
-        gsap.set(siteContent, { autoAlpha: 0 });
+        timeline.set(
+          siteContent,
+          {
+            autoAlpha: 0,
+          },
+          0
+        );
 
         timeline.to(
           siteContent,
@@ -214,7 +314,9 @@ export default function Preloader({ onRevealStart, onComplete }) {
         );
       }
 
-      // Slide the curtain upward.
+      /*
+       * Slide the preloader curtain out of view.
+       */
       timeline.to(
         overlay,
         {
@@ -226,13 +328,31 @@ export default function Preloader({ onRevealStart, onComplete }) {
       );
     };
 
-    startLoading();
+    startLoading().catch((error) => {
+      console.error("Preloader failed:", error);
+
+      if (!cancelled) {
+        const siteContent = document.querySelector(
+          "[data-site-content]"
+        );
+
+        if (siteContent) {
+          gsap.set(siteContent, {
+            clearProps: "opacity,visibility",
+          });
+        }
+
+        completePreloader();
+      }
+    });
 
     return () => {
       cancelled = true;
       progressUpdatesEnabled = false;
+
       timelineRef.current?.kill();
       timelineRef.current = null;
+
       unlockScroll();
     };
   }, []);
@@ -242,13 +362,14 @@ export default function Preloader({ onRevealStart, onComplete }) {
       ref={overlayRef}
       role="status"
       aria-label={`Loading Be The Change Foundation: ${progress}%`}
-      className="fixed inset-0 z-999999 flex items-center justify-center overflow-hidden bg-[#123d2b] px-6 text-white"
+      className="fixed inset-0 z-[999999] flex items-center justify-center overflow-hidden bg-[#123d2b] px-6 text-white"
     >
       {/* Decorative background rings */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-28 -top-28 h-80 w-80 rounded-full border border-white/[0.07]"
       />
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-40 -right-28 h-96 w-96 rounded-full border border-white/[0.07]"
@@ -295,7 +416,9 @@ export default function Preloader({ onRevealStart, onComplete }) {
         <div className="mt-3 h-[3px] w-56 overflow-hidden rounded-full bg-white/15">
           <div
             className="h-full rounded-full bg-emerald-300 transition-[width] duration-300 ease-out"
-            style={{ width: `${progress}%` }}
+            style={{
+              width: `${progress}%`,
+            }}
           />
         </div>
       </div>

@@ -419,7 +419,7 @@ export default function AreasOfWork() {
               </Link>
 
               <Link
-                to="/contact-us.html"
+                to="/contact-us"
                 className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/40 bg-white/5 px-6 py-3 font-bold text-white  transition-all duration-300 hover:-translate-y-1 hover:border-white/70 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-800"
               >
                 Contact Us

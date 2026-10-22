@@ -33,10 +33,10 @@ const footerLinks = {
   ],
 
   work: [
-    { label: "Education", href: "/education" },
-    { label: "Health", href: "/health" },
-    { label: "Culture", href: "/culture" },
-    { label: "Women Empowerment", href: "/women-empowerment" },
+    { label: "Education", href: "/area-of-work/education" },
+    { label: "Health", href: "/area-of-work/health" },
+    { label: "Culture", href: "/area-of-work/culture" },
+    { label: "Women Empowerment", href: "/area-of-work/women-empowerment" },
   ],
 };
 

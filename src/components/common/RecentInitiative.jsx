@@ -101,7 +101,7 @@ export default function RecentInitiative({
               text={title}
               className="text-2xl font-bold leading-[1.2] tracking-tight text-[#242424] sm:text-3xl lg:text-[42px]"
               speed={0.035}
-              delay={0.1}
+              delay={0.5}
             />
 
             {Icon && (

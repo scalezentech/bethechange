@@ -340,6 +340,27 @@ import treePlantationImage7 from "../../assets/images/initiatives/IN4/7.webp";
 import RecentInitiative from "./RecentInitiative";
 
 
+import img18oct2026_1 from "../../assets/images/initiatives/18oct2026/1.jpg";
+import img18oct2026_2 from "../../assets/images/initiatives/18oct2026/2.jpg";
+import img18oct2026_3 from "../../assets/images/initiatives/18oct2026/3.jpg";
+import img18oct2026_4_1 from "../../assets/images/initiatives/18oct2026/4.1.jpg";
+import img18oct2026_4 from "../../assets/images/initiatives/18oct2026/4.jpg";
+import img18oct2026_5 from "../../assets/images/initiatives/18oct2026/5.jpg";
+import img18oct2026_6 from "../../assets/images/initiatives/18oct2026/6.jpg";
+import img18oct2026_7 from "../../assets/images/initiatives/18oct2026/7.jpg";
+import img18oct2026_8 from "../../assets/images/initiatives/18oct2026/8.jpg";
+import img18oct2026_9 from "../../assets/images/initiatives/18oct2026/9.jpg";
+import img18oct2026_10 from "../../assets/images/initiatives/18oct2026/10.jpg";
+import img18oct2026_11 from "../../assets/images/initiatives/18oct2026/11.jpg";
+import img18oct2026_12 from "../../assets/images/initiatives/18oct2026/12.jpg";
+import img18oct2026_13 from "../../assets/images/initiatives/18oct2026/13.jpg";
+import img18oct2026_14 from "../../assets/images/initiatives/18oct2026/14.jpg";
+import img18oct2026_15 from "../../assets/images/initiatives/18oct2026/15.jpg";
+import img18oct2026_16 from "../../assets/images/initiatives/18oct2026/16.jpg";
+import img18oct2026_17 from "../../assets/images/initiatives/18oct2026/17.jpg";
+import img18oct2026_18 from "../../assets/images/initiatives/18oct2026/18.jpg"
+
+
 const RecentShowcaseInitiative = () => {
     return (
         <>
@@ -472,6 +493,34 @@ const RecentShowcaseInitiative = () => {
                     "Be The Change Foundation successfully organized the National Ideal Teachers Award on 18th January 2026 in Mumbai. The event aimed to recognize and honor exceptional teachers from across the country for their dedication, innovation, and outstanding contribution to the field of education.",
                     "The award ceremony witnessed the participation of 150+ teachers representing multiple states of India, celebrating their remarkable role in shaping future generations. The prestigious occasion was graced by renowned educationists, social leaders, distinguished guests, and eminent personalities who presented the awards.",
                     "This national-level initiative highlighted the indispensable role of teachers in nation-building and academic excellence. The program received widespread appreciation from educational institutions and aligns with Be The Change Foundation’s continued mission to promote quality education and recognize inspirational educators nationwide.",
+                ]}
+                primaryButtonText="Award Website"
+                primaryButtonLink="https://nationalteacheraward.com/"
+                secondaryButtonText="Know More"
+                secondaryButtonLink="https://bethechange.org.in/"
+                contentPosition="left"
+            />
+
+
+            <RecentInitiativeShowcase
+                title={
+                    <>
+                        National Ideal Teachers
+                        <br />
+                        Award 18<sup>th</sup> October  2026
+                    </>
+                }
+                date="18th October 2026"
+                images={[
+                    img18oct2026_1, img18oct2026_2, img18oct2026_3, img18oct2026_4_1, img18oct2026_4,
+                    img18oct2026_5, img18oct2026_6, img18oct2026_7, img18oct2026_8, img18oct2026_9,
+                    img18oct2026_10, img18oct2026_11, img18oct2026_12, img18oct2026_13, img18oct2026_14,
+                    img18oct2026_15, img18oct2026_16, img18oct2026_17,
+                ]}
+                description={[
+                    "Be The Change Foundation successfully organized the National Teachers Award 2026 on 18th October 2026 in Pune, Maharashtra. The event honored outstanding teachers from across India for their dedication, innovative teaching methods, and valuable contributions to education.",
+                    "The ceremony celebrated educators who play a vital role in shaping future generations. Distinguished guests and educationists came together to recognize the achievements and dedication of inspiring teachers. The event highlighted the importance of quality education and innovative teaching practices in nation-building.",
+                    "This initiative reflected the Foundation’s continued commitment to promoting educational excellence and recognizing inspirational educators nationwide."
                 ]}
                 primaryButtonText="Award Website"
                 primaryButtonLink="https://nationalteacheraward.com/"

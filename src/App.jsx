@@ -1,5 +1,6 @@
+
 import { useCallback, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -19,73 +20,85 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import GlobalAnimations from "./components/animations/GlobalAnimations";
 import Preloader from "./components/common/Preloader";
 import ScrollTop from "./components/common/ScrollTop";
-import GoogleTranslate from "./components/common/language/GoogleTranslate"
+import GoogleTranslate from "./components/common/language/GoogleTranslate";
+import ApplyCSR from "./pages/csr/ApplyForCSR";
+import LearnAboutCSR from "./pages/csr/LearnAboutCSR";
 
 function App() {
-  // The loader runs once per application mount.
-  const [preloaderVisible, setPreloaderVisible] = useState(true);
-  const [animationsEnabled, setAnimationsEnabled] = useState(false);
+    const [preloaderVisible, setPreloaderVisible] = useState(() => {
+        return (
+            typeof document !== "undefined" &&
+            document.documentElement.dataset.preloaderComplete !== "true"
+        );
+    });
 
-  const handleRevealStart = useCallback(() => {
-    setAnimationsEnabled(true);
-  }, []);
+    const [animationsEnabled, setAnimationsEnabled] = useState(() => {
+        return (
+            typeof document !== "undefined" &&
+            document.documentElement.dataset.preloaderComplete === "true"
+        );
+    });
 
-  const handleLoaderComplete = useCallback(() => {
-    setPreloaderVisible(false);
-  }, []);
+    const handleRevealStart = useCallback(() => {
+        setAnimationsEnabled(true);
+    }, []);
 
-  return (
-    <>
-      {preloaderVisible && (
-        <Preloader
-          onRevealStart={handleRevealStart}
-          onComplete={handleLoaderComplete}
-        />
-      )}
+    const handleLoaderComplete = useCallback(() => {
+        setPreloaderVisible(false);
+    }, []);
 
-      <div
-        data-site-content
-        style={preloaderVisible ? { opacity: 0 } : undefined}
-      >
-        {/* Resets scroll on route change, before animations measure positions */}
+    return (
+        <>
+            {preloaderVisible && (
+                <Preloader
+                    onRevealStart={handleRevealStart}
+                    onComplete={handleLoaderComplete}
+                />
+            )}
 
-        <GoogleTranslate />
+            {/* Keep the site mounted and visible behind the preloader. */}
+            <div data-site-content>
+                <GoogleTranslate />
+                <ScrollTop />
 
-        <ScrollTop />
+                {animationsEnabled && <GlobalAnimations />}
 
-        {animationsEnabled && <GlobalAnimations />}
+                <Header />
 
-        <Header />
+                <main className="min-h-screen">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/about-us" element={<AboutUs />} />
+                        <Route path="/our-mission" element={<OurMission />} />
+                        <Route path="/our-vision" element={<OurVision />} />
+                        <Route path="/area-of-work" element={<AreaOfWork />} />
+                        <Route
+                            path="/area-of-work/:slug"
+                            element={<AreaDetailPage />}
+                        />
+                        <Route path="/our-programs" element={<OurPrograms />} />
+                        <Route path="/contact-us" element={<ContactUs />} />
 
-        <main className="min-h-screen">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/our-mission" element={<OurMission />} />
-            <Route path="/our-vision" element={<OurVision />} />
-            <Route path="/area-of-work" element={<AreaOfWork />} />
-            <Route
-              path="/area-of-work/:slug"
-              element={<AreaDetailPage />}
-            />
-            <Route path="/our-programs" element={<OurPrograms />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route
-              path="/privacy-policy"
-              element={<PrivacyPolicy />}
-            />
-            <Route
-              path="/terms-and-conditions"
-              element={<TermsAndConditions />}
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
+                        <Route path="/apply-csr" element={<ApplyCSR />} />
+                        <Route path="/learn-about-csr" element={<LearnAboutCSR />} />
 
-        <Footer />
-      </div>
-    </>
-  );
+
+                        <Route
+                            path="/privacy-policy"
+                            element={<PrivacyPolicy />}
+                        />
+                        <Route
+                            path="/terms-and-conditions"
+                            element={<TermsAndConditions />}
+                        />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </main>
+
+                <Footer />
+            </div>
+        </>
+    );
 }
 
 export default App;

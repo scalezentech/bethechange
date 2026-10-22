@@ -122,58 +122,11 @@ function normalizePath(path = "/") {
 }
 
 function isActiveRoute(pathname, href) {
-    if (
-        !href ||
-        href === "#" ||
-        /^https?:\/\//i.test(href)
-    ) {
+    if (!href || href === "#" || /^https?:\/\//i.test(href)) {
         return false;
     }
 
     return normalizePath(pathname) === normalizePath(href);
-}
-
-/* --------------------------------------------------
-   Preloader completion hook
-
-   The Preloader dispatches "site:preloader-complete"
-   when its exit animation has finished.
--------------------------------------------------- */
-
-function usePreloaderComplete() {
-    const [preloaderDone, setPreloaderDone] = useState(
-        () =>
-            typeof document !== "undefined" &&
-            document.documentElement.dataset.preloaderComplete === "true"
-    );
-
-    useEffect(() => {
-        const handlePreloaderComplete = () => {
-            setPreloaderDone(true);
-        };
-
-        // Handle a completion event that happened before this effect ran.
-        if (
-            document.documentElement.dataset.preloaderComplete === "true"
-        ) {
-            setPreloaderDone(true);
-            return;
-        }
-
-        window.addEventListener(
-            "site:preloader-complete",
-            handlePreloaderComplete
-        );
-
-        return () => {
-            window.removeEventListener(
-                "site:preloader-complete",
-                handlePreloaderComplete
-            );
-        };
-    }, []);
-
-    return preloaderDone;
 }
 
 /* --------------------------------------------------
@@ -339,7 +292,6 @@ function Dropdown({ label, items, pathname, onNavigate }) {
     return (
         <div
             ref={rootRef}
-            data-nav-stagger
             className="relative w-full lg:w-auto"
             onPointerEnter={handlePointerEnter}
             onPointerLeave={handlePointerLeave}
@@ -441,6 +393,10 @@ function Dropdown({ label, items, pathname, onNavigate }) {
 
 /* --------------------------------------------------
    Main header
+
+   The initial entrance animation has been removed.
+   Dropdown, mobile menu, and language menu animations
+   remain enabled.
 -------------------------------------------------- */
 
 export default function Header() {
@@ -448,8 +404,6 @@ export default function Header() {
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
-
-    const preloaderDone = usePreloaderComplete();
 
     const headerRef = useRef(null);
     const menuRef = useRef(null);
@@ -471,111 +425,6 @@ export default function Header() {
             })
         );
     };
-
-    /* --------------------------------------------------
-       Header entrance + main navigation stagger
-
-       Runs only after the preloader has completely exited.
-       Does not replay on normal route changes.
-    -------------------------------------------------- */
-
-    useGSAP(
-        () => {
-            const header = headerRef.current;
-
-            if (!header || !preloaderDone) return;
-
-            const prefersReducedMotion = window.matchMedia(
-                "(prefers-reduced-motion: reduce)"
-            ).matches;
-
-            if (prefersReducedMotion) return;
-
-            const topBar = header.querySelector(
-                '[data-header-intro="top"]'
-            );
-
-            const banner = header.querySelector(
-                '[data-header-intro="banner"]'
-            );
-
-            const navigation = header.querySelector(
-                '[data-header-intro="navigation"]'
-            );
-
-            const navItems = navigation
-                ? navigation.querySelectorAll("[data-nav-stagger]")
-                : [];
-
-            const timeline = gsap.timeline({
-                defaults: {
-                    ease: "power2.out",
-                },
-            });
-
-            if (topBar) {
-                timeline.fromTo(
-                    topBar,
-                    { autoAlpha: 0, y: -10 },
-                    {
-                        autoAlpha: 1,
-                        y: 0,
-                        duration: 0.4,
-                        clearProps: "opacity,visibility,transform",
-                    }
-                );
-            }
-
-            if (banner) {
-                timeline.fromTo(
-                    banner,
-                    { autoAlpha: 0, y: 12 },
-                    {
-                        autoAlpha: 1,
-                        y: 0,
-                        duration: 0.5,
-                        clearProps: "opacity,visibility,transform",
-                    },
-                    "-=0.15"
-                );
-            }
-
-            if (navigation) {
-                timeline.fromTo(
-                    navigation,
-                    { autoAlpha: 0, y: 10 },
-                    {
-                        autoAlpha: 1,
-                        y: 0,
-                        duration: 0.4,
-                        clearProps: "opacity,visibility,transform",
-                    },
-                    "-=0.15"
-                );
-            }
-
-            if (navItems.length) {
-                timeline.fromTo(
-                    navItems,
-                    { autoAlpha: 0, y: 12 },
-                    {
-                        autoAlpha: 1,
-                        y: 0,
-                        duration: 0.35,
-                        stagger: 0.07,
-                        ease: "power2.out",
-                        clearProps: "opacity,visibility,transform",
-                    },
-                    "-=0.1"
-                );
-            }
-        },
-        {
-            scope: headerRef,
-            dependencies: [preloaderDone],
-            revertOnUpdate: true,
-        }
-    );
 
     /* --------------------------------------------------
        Mobile menu open / close animation
@@ -765,10 +614,7 @@ export default function Header() {
             className="relative z-40 w-full bg-[#1e8449] text-white"
         >
             {/* Top information bar */}
-            <div
-                data-header-intro="top"
-                className="border-b border-white/15"
-            >
+            <div className="border-b border-white/15">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-3 sm:flex-row lg:px-6">
                     {/* Social links */}
                     <div className="flex items-center gap-1">
@@ -899,10 +745,7 @@ export default function Header() {
             </div>
 
             {/* Responsive header images */}
-            <div
-                data-header-intro="banner"
-                className="w-full overflow-hidden bg-white"
-            >
+            <div className="w-full overflow-hidden bg-white">
                 <img
                     src={mobileHeaderImage}
                     alt="Be The Change Foundation"
@@ -920,7 +763,6 @@ export default function Header() {
 
             {/* Main navigation */}
             <nav
-                data-header-intro="navigation"
                 aria-label="Main navigation"
                 className="border-y border-white/70 bg-[#1e8449]"
             >
@@ -969,7 +811,6 @@ export default function Header() {
                         {mainLinks.map(({ label, href }) => (
                             <HeaderLink
                                 key={href}
-                                data-nav-stagger
                                 href={href}
                                 onClick={closeMobileMenu}
                                 aria-current={
@@ -998,7 +839,6 @@ export default function Header() {
                         />
 
                         <HeaderLink
-                            data-nav-stagger
                             href="/contact-us"
                             onClick={closeMobileMenu}
                             aria-current={
@@ -1014,7 +854,6 @@ export default function Header() {
                         {/* Donate button */}
                         <div className="flex justify-center px-4 py-3 lg:pl-3 lg:pr-0">
                             <HeaderLink
-                                data-nav-stagger
                                 href="https://razorpay.me/@bethechangefoundation5072"
                                 external
                                 onClick={closeMobileMenu}
