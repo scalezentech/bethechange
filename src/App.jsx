@@ -19,6 +19,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import GlobalAnimations from "./components/animations/GlobalAnimations";
 import Preloader from "./components/common/Preloader";
 import ScrollTop from "./components/common/ScrollTop";
+import GoogleTranslate from "./components/common/language/GoogleTranslate"
 
 function App() {
   // The loader runs once per application mount.
@@ -47,6 +48,9 @@ function App() {
         style={preloaderVisible ? { opacity: 0 } : undefined}
       >
         {/* Resets scroll on route change, before animations measure positions */}
+
+        <GoogleTranslate />
+
         <ScrollTop />
 
         {animationsEnabled && <GlobalAnimations />}

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { CalendarDays, Users } from "lucide-react";
 
-// import sectionTitleBg from "../assets/images/background/section-title-bg-two.png";
-
 import treePlantation from "../../assets/images/causes/cause-two1.jpg";
 import bloodDonation from "../../assets/images/causes/cause-two2.jpg";
 import careerGuidance from "../../assets/images/causes/cause-two22.jpg";
@@ -40,7 +38,10 @@ const causes = [
 
 function CauseCard({ cause }) {
   return (
-    <article className="group mx-auto w-full max-w-[560px] overflow-hidden rounded-xl bg-white shadow-[0_3px_12px_rgba(0,0,0,0.08)] transition-shadow duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)]">
+    <article
+      data-gsap-item
+      className="group mx-auto w-full max-w-[560px] overflow-hidden rounded-xl bg-white shadow-[0_3px_12px_rgba(0,0,0,0.08)] transition-shadow duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)]"
+    >
       {/* Image */}
       <div className="relative overflow-hidden">
         <img
@@ -80,14 +81,18 @@ function CauseCard({ cause }) {
           <div className="h-[9px] w-full overflow-hidden rounded-full bg-[#dedede]">
             <div
               className="h-full rounded-full bg-[#10884d] transition-all duration-500"
-              style={{ width: `${cause.progress}%` }}
+              style={{
+                width: `${cause.progress}%`,
+              }}
             />
           </div>
 
           <span
             aria-hidden="true"
             className="absolute top-1/2 h-8 w-8 -translate-y-1/2 rounded-full border-[4px] border-white bg-[#10884d]"
-            style={{ left: `calc(${cause.progress}% - 24px)` }}
+            style={{
+              left: `calc(${cause.progress}% - 24px)`,
+            }}
           />
         </div>
       </div>
@@ -100,6 +105,7 @@ function CauseCard({ cause }) {
             className="shrink-0 text-[#10884d]"
             aria-hidden="true"
           />
+
           <span>{cause.date}</span>
         </div>
 
@@ -109,6 +115,7 @@ function CauseCard({ cause }) {
             className="shrink-0 text-[#10884d]"
             aria-hidden="true"
           />
+
           <span>{cause.volunteers} Volunteers</span>
         </div>
       </div>
@@ -119,44 +126,61 @@ function CauseCard({ cause }) {
 export default function RecentCauses() {
   const [showAll, setShowAll] = useState(false);
 
-  const visibleCauses = showAll ? causes : causes.slice(0, 3);
+  const visibleCauses = showAll
+    ? causes
+    : causes.slice(0, 3);
 
   return (
     <section className="bg-white px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-[1200px]">
         {/* Section heading */}
         <header className="relative mb-10 text-center sm:mb-12">
-          <h2 className="relative mx-auto max-w-[1050px] text-3xl font-bold leading-tight text-[#353535] sm:text-4xl lg:text-[48px]">
+          <h2
+            data-gsap-reveal
+            className="relative mx-auto max-w-[1050px] text-3xl font-bold leading-tight text-[#353535] sm:text-4xl lg:text-[48px]"
+          >
             Our Recent Causes Transforming Lives
             <br className="hidden sm:block" />
             Through Recent Initiatives Environment
           </h2>
 
           <div
+            data-gsap-reveal
             aria-hidden="true"
             className="mx-auto mt-5 h-1 w-24 rounded-full bg-[#20b76b]"
           />
         </header>
 
         {/* Cause cards */}
-        <div className="grid grid-cols-1 items-center gap-7  md:grid-cols-2">
+        <div
+          data-gsap-stagger
+          className="grid grid-cols-1 items-center gap-7 md:grid-cols-2"
+        >
           {visibleCauses.map((cause) => (
-            <CauseCard key={cause.id} cause={cause} />
+            <CauseCard
+              key={cause.id}
+              cause={cause}
+            />
           ))}
         </div>
 
         {/* View more / less */}
         {causes.length > 3 && (
-          <div className="mt-10 text-center">
+          <div
+            data-gsap-reveal
+            className="mt-10 text-center"
+          >
             <button
               type="button"
               onClick={() => setShowAll((current) => !current)}
               aria-expanded={showAll}
               className="text-base italic text-[#777777] transition-colors hover:text-[#10884d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10884d] focus-visible:ring-offset-4"
             >
-              Want to see our area’s of work{" "}
+              Want to see our area's of work{" "}
               <span className="font-semibold text-[#10884d] underline underline-offset-4">
-                {showAll ? "View Less" : "Click here to View More"}
+                {showAll
+                  ? "View Less"
+                  : "Click here to View More"}
               </span>
             </button>
           </div>

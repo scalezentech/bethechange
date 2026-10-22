@@ -54,6 +54,7 @@ export default function NewspaperGallery({
         {/* Responsive newspaper gallery */}
 
         <div
+        data-gsap-reveal
           className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4"
         >
           {images.map((image, index) => {

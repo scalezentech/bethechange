@@ -1,4 +1,9 @@
-import { cloneElement, Fragment, isValidElement, useRef } from "react";
+import {
+  cloneElement,
+  Fragment,
+  isValidElement,
+  useRef,
+} from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -18,6 +23,7 @@ function animateContent(node, path = "text") {
 
       const key = `${path}-${tokenIndex}`;
 
+      // Preserve spaces and line breaks between words.
       if (/^\s+$/u.test(token)) {
         return (
           <span key={key} className="whitespace-pre-wrap">
@@ -26,17 +32,14 @@ function animateContent(node, path = "text") {
         );
       }
 
+      // Each word is now a single animation target.
       return (
-        <span key={key} className="inline-block whitespace-nowrap">
-          {Array.from(token).map((character, characterIndex) => (
-            <span
-              key={`${key}-${characterIndex}`}
-              data-typing-character
-              className="inline-block"
-            >
-              {character}
-            </span>
-          ))}
+        <span
+          key={key}
+          data-typing-word
+          className="inline-block whitespace-nowrap"
+        >
+          {token}
         </span>
       );
     });
@@ -50,7 +53,9 @@ function animateContent(node, path = "text") {
 
   if (isValidElement(node)) {
     if (node.type === "br") {
-      return cloneElement(node, { key: node.key ?? path });
+      return cloneElement(node, {
+        key: node.key ?? path,
+      });
     }
 
     const key = node.key ?? path;
@@ -73,7 +78,11 @@ function animateContent(node, path = "text") {
       );
     }
 
-    return cloneElement(node, { key }, animatedChildren);
+    return cloneElement(
+      node,
+      { key },
+      animatedChildren
+    );
   }
 
   return node;
@@ -84,7 +93,7 @@ export default function TypingHeading({
   children,
   as: Tag = "h1",
   className = "",
-  speed = 0.035,
+  speed = 0.12,
   delay = 0.1,
   triggerOnView = false,
   ariaLabel,
@@ -92,31 +101,36 @@ export default function TypingHeading({
 }) {
   const headingRef = useRef(null);
 
-  const content = children !== undefined ? children : text ?? "";
+  const content =
+    children !== undefined ? children : text ?? "";
 
   const accessibleText =
     ariaLabel ??
-    (typeof content === "string" || typeof content === "number"
-      ? String(content)
-      : undefined);
+    (
+      typeof content === "string" ||
+      typeof content === "number"
+        ? String(content)
+        : undefined
+    );
 
   useGSAP(
     () => {
       const heading = headingRef.current;
+
       if (!heading) return;
 
-      const characters = heading.querySelectorAll(
-        "[data-typing-character]"
+      const words = heading.querySelectorAll(
+        "[data-typing-word]"
       );
 
-      if (!characters.length) return;
+      if (!words.length) return;
 
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
       if (prefersReducedMotion) {
-        gsap.set(characters, {
+        gsap.set(words, {
           autoAlpha: 1,
           y: 0,
           clearProps: "opacity,visibility,transform",
@@ -126,7 +140,7 @@ export default function TypingHeading({
       }
 
       gsap.fromTo(
-        characters,
+        words,
         {
           y: 20,
           autoAlpha: 0,
@@ -153,7 +167,12 @@ export default function TypingHeading({
     },
     {
       scope: headingRef,
-      dependencies: [content, speed, delay, triggerOnView],
+      dependencies: [
+        content,
+        speed,
+        delay,
+        triggerOnView,
+      ],
       revertOnUpdate: true,
     }
   );

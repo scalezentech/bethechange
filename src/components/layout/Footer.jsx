@@ -43,25 +43,25 @@ const footerLinks = {
 const socialLinks = [
   {
     label: "Facebook",
-    href: "#",
+    href: "https://www.facebook.com/bethechangemaha",
     Icon: FaFacebookF,
     className: "hover:bg-[#1877F2]",
   },
   {
     label: "Twitter",
-    href: "#",
+    href: "https://x.com/bethechangemaha",
     Icon: FaTwitter,
     className: "hover:bg-[#1DA1F2]",
   },
   {
     label: "Instagram",
-    href: "#",
+    href: "https://www.instagram.com/bethechangemaha",
     Icon: FaInstagram,
     className: "hover:bg-[#E4405F]",
   },
   {
     label: "LinkedIn",
-    href: "#",
+    href: "https://www.linkedin.com/company/bethechangemaha/about/",
     Icon: FaLinkedinIn,
     className: "hover:bg-[#0A66C2]",
   },

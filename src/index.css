@@ -4,3 +4,14 @@ html {
     overflow-y: scroll;
     /* scrollbar is always there, so width never changes */
 }
+
+/* Legacy Google Translate widget cleanup */
+.goog-te-banner-frame,
+.goog-te-gadget-icon,
+body>.skiptranslate {
+    display: none !important;
+}
+
+body {
+    top: 0 !important;
+}

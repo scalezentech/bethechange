@@ -1,4 +1,3 @@
-
 import {
   BookOpen,
   HeartPulse,
@@ -62,7 +61,8 @@ const defaultAreas = [
   },
   {
     title: "Social",
-    description: "Breaking Barriers, Building Inclusion: Social Justice for All",
+    description:
+      "Breaking Barriers, Building Inclusion: Social Justice for All",
     image: social,
     color: "#AAA5F7",
     textColor: "#ffffff",
@@ -106,6 +106,7 @@ function AreaCard({ area, featured = false }) {
 
   return (
     <article
+      data-gsap-item
       className={`group relative min-w-0 rounded-2xl ${
         featured ? "lg:col-span-2" : ""
       }`}
@@ -205,7 +206,10 @@ export default function FocusedAreas({
           {/* Left column */}
           <div className="min-w-0 lg:col-span-8">
             <header className="mb-10 text-center">
-              <span className="relative isolate inline-flex items-center justify-center px-5 py-2 text-3xl font-extrabold text-[#10884d] sm:text-4xl">
+              <span
+                data-gsap-reveal
+                className="relative isolate inline-flex items-center justify-center px-5 py-2 text-3xl font-extrabold text-[#10884d] sm:text-4xl"
+              >
                 <span
                   aria-hidden="true"
                   className="absolute inset-0 -z-10 bg-[url('/assets/images/background/section-title-bg-two.png')] bg-contain bg-center bg-no-repeat"
@@ -213,18 +217,30 @@ export default function FocusedAreas({
                 {eyebrow}
               </span>
 
-              <h2 className="mt-3 text-3xl font-bold leading-tight text-[#353535] sm:text-4xl lg:text-[44px]">
+              <h2
+                data-gsap-reveal
+                className="mt-3 text-3xl font-bold leading-tight text-[#353535] sm:text-4xl lg:text-[44px]"
+              >
                 {title}
               </h2>
 
-              <span className="mx-auto mt-4 block h-[3px] w-[72px] rounded-full bg-[#20B76B]" />
+              <span
+                data-gsap-reveal
+                className="mx-auto mt-4 block h-[3px] w-[72px] rounded-full bg-[#20B76B]"
+              />
 
-              <p className="mx-auto mt-4 max-w-3xl text-left text-sm leading-[1.9] text-[#666666] sm:text-[15px]">
+              <p
+                data-gsap-reveal
+                className="mx-auto mt-4 max-w-3xl text-left text-sm leading-[1.9] text-[#666666] sm:text-[15px]"
+              >
                 {description}
               </p>
             </header>
 
-            <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
+            <div
+              data-gsap-stagger
+              className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2"
+            >
               {educationArea && (
                 <AreaCard
                   key={educationArea.title}
@@ -234,13 +250,19 @@ export default function FocusedAreas({
               )}
 
               {remainingAreas.slice(0, 2).map((area) => (
-                <AreaCard key={area.title} area={area} />
+                <AreaCard
+                  key={area.title}
+                  area={area}
+                />
               ))}
             </div>
           </div>
 
           {/* Right column */}
-          <div className="min-w-0 lg:col-span-4">
+          <div
+            data-gsap-stagger
+            className="min-w-0 lg:col-span-4"
+          >
             {healthArea && (
               <div className="mb-6">
                 <AreaCard area={healthArea} />
@@ -257,9 +279,15 @@ export default function FocusedAreas({
 
         {/* Remaining areas */}
         {remainingAreas.length > 3 && (
-          <div className="mt-7 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            data-gsap-stagger
+            className="mt-7 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
             {remainingAreas.slice(3).map((area) => (
-              <AreaCard key={area.title} area={area} />
+              <AreaCard
+                key={area.title}
+                area={area}
+              />
             ))}
           </div>
         )}
