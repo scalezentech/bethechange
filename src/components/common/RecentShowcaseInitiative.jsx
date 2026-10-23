@@ -364,23 +364,25 @@ import img18oct2026_18 from "../../assets/images/initiatives/18oct2026/18.jpg"
 const RecentShowcaseInitiative = () => {
     return (
         <>
-            <RecentInitiativeShowcase
-                title="Sunrise Pre-Primary School Khandala, Shrirampur"
-                images={[
-                    image1, image2, image3, image4, image5, image6,
-                    image7, image8, image9, image10, image11, image12,
-                    image13, image14, image15, image16, image17, image18,
-                ]}
-                description={[
-                    "Sunrise Pre-Primary School, initiated by Be The Change Foundation, provides a welcoming environment focused on inclusive education and early childhood development.",
-                    "We strive to nurture young minds, encourage curiosity, and build a strong educational foundation for children in Khandala.",
-                ]}
-                primaryButtonText="School Website"
-                primaryButtonLink="https://bethechange.org.in/"
-                secondaryButtonText="Admission Enquiry"
-                secondaryButtonLink="https://bethechange.org.in/contact-us.html"
-                contentPosition="right"
-            />
+            <section id="education-awareness" className="scroll-mt-0">
+                <RecentInitiativeShowcase
+                    title="Sunrise Pre-Primary School Khandala, Shrirampur"
+                    images={[
+                        image1, image2, image3, image4, image5, image6,
+                        image7, image8, image9, image10, image11, image12,
+                        image13, image14, image15, image16, image17, image18,
+                    ]}
+                    description={[
+                        "Sunrise Pre-Primary School, initiated by Be The Change Foundation, provides a welcoming environment focused on inclusive education and early childhood development.",
+                        "We strive to nurture young minds, encourage curiosity, and build a strong educational foundation for children in Khandala.",
+                    ]}
+                    primaryButtonText="School Website"
+                    primaryButtonLink="https://bethechange.org.in/"
+                    secondaryButtonText="Admission Enquiry"
+                    secondaryButtonLink="https://bethechange.org.in/contact-us.html"
+                    contentPosition="right"
+                />
+            </section>
 
             <RecentInitiativeShowcase
                 title={
@@ -515,7 +517,7 @@ const RecentShowcaseInitiative = () => {
                     img18oct2026_1, img18oct2026_2, img18oct2026_3, img18oct2026_4_1, img18oct2026_4,
                     img18oct2026_5, img18oct2026_6, img18oct2026_7, img18oct2026_8, img18oct2026_9,
                     img18oct2026_10, img18oct2026_11, img18oct2026_12, img18oct2026_13, img18oct2026_14,
-                    img18oct2026_15, img18oct2026_16, img18oct2026_17,
+                    img18oct2026_15, img18oct2026_16, img18oct2026_17,img18oct2026_18
                 ]}
                 description={[
                     "Be The Change Foundation successfully organized the National Teachers Award 2026 on 18th October 2026 in Pune, Maharashtra. The event honored outstanding teachers from across India for their dedication, innovative teaching methods, and valuable contributions to education.",
@@ -730,31 +732,33 @@ const RecentShowcaseInitiative = () => {
                 contentPosition="right"
             />
 
-            <RecentInitiativeShowcase
-                title={
-                    <>
-                        Tree Plantation at Khanapur,
-                        <br />
-                        Shrirampur 2023
-                    </>
-                }
-                images={[
-                    treePlantationImage1, treePlantationImage2, treePlantationImage3,
-                    treePlantationImage4, treePlantationImage5, treePlantationImage6,
-                    treePlantationImage7,
-                ]}
-                description={[
-                    "Be The Change Foundation successfully organized a Tree Plantation Program at Khanapur Village as part of our environmental and community engagement drive.",
-                    "This initiative was carried out with the active participation and support of local villagers, emphasizing the importance of collective responsibility towards a greener future.",
-                    "The event not only aimed at increasing the green cover but also spread awareness among the residents about the long-term benefits of tree plantation.",
-                    "It was heartening to witness the enthusiasm of the community in taking ownership of the environment.",
-                ]}
-                primaryButtonText=""
-                primaryButtonLink=""
-                secondaryButtonText=""
-                secondaryButtonLink=""
-                contentPosition="left"
-            />
+            <section id="tree-plantation" className="scroll-mt-24">
+                <RecentInitiativeShowcase
+                    title={
+                        <>
+                            Tree Plantation at Khanapur,
+                            <br />
+                            Shrirampur 2023
+                        </>
+                    }
+                    images={[
+                        treePlantationImage1, treePlantationImage2, treePlantationImage3,
+                        treePlantationImage4, treePlantationImage5, treePlantationImage6,
+                        treePlantationImage7,
+                    ]}
+                    description={[
+                        "Be The Change Foundation successfully organized a Tree Plantation Program at Khanapur Village as part of our environmental and community engagement drive.",
+                        "This initiative was carried out with the active participation and support of local villagers, emphasizing the importance of collective responsibility towards a greener future.",
+                        "The event not only aimed at increasing the green cover but also spread awareness among the residents about the long-term benefits of tree plantation.",
+                        "It was heartening to witness the enthusiasm of the community in taking ownership of the environment.",
+                    ]}
+                    primaryButtonText=""
+                    primaryButtonLink=""
+                    secondaryButtonText=""
+                    secondaryButtonLink=""
+                    contentPosition="left"
+                />
+            </section>
 
             <RecentInitiative
                 title={<>Educational Awareness Campaign 2023 at Kopargaon</>}

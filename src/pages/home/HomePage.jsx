@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import HeroSlider from "../../components/common/HeroSlider";
 import heroBgImage from "../../assets/images/hero/hero-two-bg.jpg";
@@ -8,18 +8,21 @@ import sectionTitleBgTwo from "../../assets/images/background/section-title-bg-t
 import pdf from "../../assets/BE_THE_CHANGE_PROSPECTUS_2025.pdf";
 
 export default function HomePage() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [preloaderDone, setPreloaderDone] = useState(
         () =>
             typeof document !== "undefined" &&
             document.documentElement.dataset.preloaderComplete === "true"
     );
 
+    // Track completion of the site preloader.
     useEffect(() => {
         const handlePreloaderComplete = () => {
             setPreloaderDone(true);
         };
 
-        // Handle the case where the preloader finished before this effect ran.
         if (
             document.documentElement.dataset.preloaderComplete === "true"
         ) {
@@ -39,6 +42,87 @@ export default function HomePage() {
             );
         };
     }, []);
+
+    // Navigate to the requested homepage section.
+    useEffect(() => {
+        const targetId = location.state?.scrollToId;
+
+        if (!targetId) return;
+
+        let cancelled = false;
+        let frameId;
+        let attempts = 0;
+
+        const scrollToTarget = () => {
+            if (cancelled) return;
+
+            const target = document.getElementById(targetId);
+
+            // The section may not have mounted yet.
+            if (!target) {
+                attempts += 1;
+
+                if (attempts < 120) {
+                    frameId = requestAnimationFrame(scrollToTarget);
+                } else {
+                    console.warn(
+                        `Unable to find homepage section: ${targetId}`
+                    );
+                }
+
+                return;
+            }
+
+            // Wait for the next frame so the DOM can finish updating.
+            frameId = requestAnimationFrame(() => {
+                if (cancelled) return;
+
+                const currentTarget = document.getElementById(targetId);
+
+                if (!currentTarget) {
+                    attempts += 1;
+
+                    if (attempts < 120) {
+                        frameId = requestAnimationFrame(scrollToTarget);
+                    }
+
+                    return;
+                }
+
+                // Calculate the destination instead of using scrollIntoView.
+                const header = document.querySelector("header");
+                const headerHeight =
+                    header?.getBoundingClientRect().height ?? 0;
+
+                const targetPosition =
+                    currentTarget.getBoundingClientRect().top +
+                    window.scrollY -
+                    headerHeight;
+
+                // Use immediate scrolling to avoid competing animations.
+                window.scrollTo({
+                    top: Math.max(0, targetPosition),
+                    behavior: "auto",
+                });
+
+                // Clear the navigation state after scrolling.
+                navigate(location.pathname, {
+                    replace: true,
+                    state: null,
+                });
+            });
+        };
+
+        frameId = requestAnimationFrame(scrollToTarget);
+
+        return () => {
+            cancelled = true;
+
+            if (frameId !== undefined) {
+                cancelAnimationFrame(frameId);
+            }
+        };
+    }, [location.pathname, location.state, navigate]);
 
     const headingClassName =
         "max-w-xl text-4xl font-bold leading-tight sm:text-5xl lg:text-[58px]";
@@ -88,11 +172,9 @@ export default function HomePage() {
                                 </span>
                             </span>
 
-                        
-                                <h1 className={headingClassName}>
-                                    Creating Lasting Change
-                                </h1>
-                        
+                            <h1 className={headingClassName}>
+                                Creating Lasting Change
+                            </h1>
 
                             {/* Description */}
                             <p className="mx-auto mt-6 max-w-xl text-base leading-7 sm:text-lg sm:leading-8">

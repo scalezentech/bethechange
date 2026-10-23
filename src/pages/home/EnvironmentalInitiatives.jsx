@@ -124,7 +124,7 @@ export default function EnvironmentalInitiatives() {
                 aria-hidden="true"
                 loading="lazy"
                 decoding="async"
-                className="pointer-events-none absolute inset-0 z-0 h-full w-full object-contain"
+                className="pointer-events-none absolute inset-0 z-0 h-25 w-full object-center"
               />
 
               <span className="relative z-10 text-[#087F3E] text-shadow-2xs">

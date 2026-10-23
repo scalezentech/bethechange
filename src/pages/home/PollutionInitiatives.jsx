@@ -58,12 +58,13 @@ export default function PollutionInitiatives() {
             Taking Action Against Pollution for a
 
             <span className="relative mx-auto mt-2 block w-fit max-w-full px-3 py-1.5">
-              <span
+              <img
+                src={sectionTitleBg}
+                alt=""
                 aria-hidden="true"
-                className="absolute inset-0 z-0 bg-contain bg-center bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${sectionTitleBg})`,
-                }}
+                loading="lazy"
+                decoding="async"
+                className="pointer-events-none absolute inset-0 z-0 w-full object-center"
               />
 
               <span className="relative z-10 text-[#087f3e]">

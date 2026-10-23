@@ -1,18 +1,35 @@
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  ArrowLeft,
   ArrowRight,
-  Building2,
+  ArrowUpRight,
+  BookOpen,
+  GraduationCap,
+  Users,
+  School,
+  Award,
+  Monitor,
+  BriefcaseBusiness,
   CheckCircle2,
+  ShieldCheck,
+  ClipboardCheck,
+  ChartNoAxesCombined,
   Handshake,
+  Mail,
+  Phone,
   MapPin,
+  Send,
+  LoaderCircle,
+  HeartHandshake,
+  Target,
+  FileCheck,
 } from "lucide-react";
-import {sendCSREmail} from "../../utils/csrEmailSender.js"
+import { sendCSREmail } from "../../utils/csrEmailSender";
 
 const initialForm = {
-  organisation: "",
   contactPerson: "",
+  organisation: "",
   email: "",
   phone: "",
   focusArea: "",
@@ -21,28 +38,192 @@ const initialForm = {
 };
 
 const focusAreas = [
-  "Poverty Alleviation",
-  "Child Development",
-  "Women Empowerment",
-  "Skill Development",
-  "Education for Poor & Street Children",
-  "Health Programs",
-  "Environment Protection",
-  "Consumer Awareness",
-  "Elderly Care",
-  "Rural Development",
-  "Slum Development",
-  "Livelihood Support",
+  "School Education Support (Class I–X)",
+  "Scholarship & Competitive Exam Programs",
+  "Teacher Training & National Award Programs",
+  "Digital Learning & Rural School Development",
+  "Career Guidance & Student Mentorship",
+  "Skill Development & Youth Empowerment",
+  "Other Education Initiative",
 ];
 
-const inputClass =
-  "mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100";
+const budgetOptions = [
+  "Below ₹1 Lakh",
+  "₹1 Lakh – ₹5 Lakhs",
+  "₹5 Lakhs – ₹10 Lakhs",
+  "₹10 Lakhs – ₹25 Lakhs",
+  "₹25 Lakhs – ₹50 Lakhs",
+  "Above ₹50 Lakhs",
+  "To Be Discussed",
+];
+
+const coreFocusAreas = [
+  {
+    number: "01",
+    title: "School Education Support",
+    subtitle: "Class I–X",
+    description:
+      "Support educational opportunities and learning initiatives for school students.",
+    icon: School,
+  },
+  {
+    number: "02",
+    title: "Scholarships & Competitive Exams",
+    subtitle: "Learning opportunities",
+    description:
+      "Help students access scholarship opportunities and competitive examination preparation.",
+    icon: Award,
+  },
+  {
+    number: "03",
+    title: "Teacher Training & National Awards",
+    subtitle: "Empowering educators",
+    description:
+      "Support teacher development, recognition, and initiatives that strengthen education.",
+    icon: GraduationCap,
+  },
+  {
+    number: "04",
+    title: "Digital Learning & Rural Schools",
+    subtitle: "Bridging the digital divide",
+    description:
+      "Promote digital learning opportunities and educational development in rural schools.",
+    icon: Monitor,
+  },
+  {
+    number: "05",
+    title: "Career Guidance & Student Mentorship",
+    subtitle: "Preparing for the future",
+    description:
+      "Help students explore career paths, receive guidance, and make informed decisions.",
+    icon: Users,
+  },
+  {
+    number: "06",
+    title: "Skill Development & Youth Empowerment",
+    subtitle: "Building capabilities",
+    description:
+      "Support skill development and help young people prepare for employment opportunities.",
+    icon: BriefcaseBusiness,
+  },
+];
+
+const credentials = [
+  "CSR-1 Registered NGO",
+  "12A & 80G Compliance",
+  "NITI Aayog Darpan Registered",
+  "Transparent Reporting & Impact Metrics",
+  "State-Level Reach & Execution Capability",
+];
+
+const expectedOutcomes = [
+  {
+    title: "Reduced Dropout Rates",
+    description:
+      "Support initiatives that help students continue their education.",
+    icon: BookOpen,
+  },
+  {
+    title: "Increased Digital Literacy",
+    description:
+      "Expand access to digital learning and technology-enabled education.",
+    icon: Monitor,
+  },
+  {
+    title: "Empowered Teachers",
+    description:
+      "Encourage teacher development, learning, and professional recognition.",
+    icon: GraduationCap,
+  },
+  {
+    title: "Skilled, Employable Youth",
+    description:
+      "Promote career readiness, practical skills, and youth empowerment.",
+    icon: BriefcaseBusiness,
+  },
+];
+
+const partnershipBenefits = [
+  {
+    title: "Strong Governance",
+    description:
+      "Work towards clear objectives, responsible implementation, and transparent operations.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Transparent Operations",
+    description:
+      "Support accountability through appropriate reporting and impact metrics.",
+    icon: ClipboardCheck,
+  },
+  {
+    title: "Scalable Programs",
+    description:
+      "Explore education initiatives designed around project goals and community needs.",
+    icon: ChartNoAxesCombined,
+  },
+];
+
+function SectionHeading({ eyebrow, title, description, light = false }) {
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      <p
+        className={`text-sm font-bold uppercase tracking-[0.18em] ${light ? "text-green-200" : "text-green-700"
+          }`}
+      >
+        {eyebrow}
+      </p>
+
+      <h2
+        className={`mt-3 text-3xl font-extrabold leading-tight sm:text-4xl ${light ? "text-white" : "text-slate-900"
+          }`}
+      >
+        {title}
+      </h2>
+
+      {description && (
+        <p
+          className={`mt-4 text-base leading-8 ${light ? "text-green-50" : "text-slate-600"
+            }`}
+        >
+          {description}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function FormField({ label, required = false, children }) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-sm font-semibold text-slate-700">
+        {label}
+        {required && <span className="ml-1 text-red-600">*</span>}
+      </span>
+      {children}
+    </label>
+  );
+}
+
+const inputClasses =
+  "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-700/10";
 
 export default function ApplyCSR() {
   const [form, setForm] = useState(initialForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = "smooth";
+
+    return () => {
+      root.style.scrollBehavior = previousBehavior;
+    };
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -57,15 +238,12 @@ export default function ApplyCSR() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (isSending) return;
-
-    setIsSending(true);
     setError("");
+    setIsSubmitting(true);
 
     try {
       await sendCSREmail({
-        subject: "New CSR Partnership Enquiry",
+        subject: "New CSR Partnership Enquiry - Be The Change Foundation",
         replyTo: form.email.trim(),
         data: {
           "Contact Person Name": form.contactPerson.trim(),
@@ -73,263 +251,542 @@ export default function ApplyCSR() {
           "Official Email ID": form.email.trim(),
           "Contact Number": form.phone.trim(),
           "CSR Focus Area": form.focusArea,
-          "Approx CSR Budget": form.budget || "Not specified",
-          "CSR Objective, Preferred Location, or Timeline":
-            form.message.trim(),
+          "Approximate CSR Budget": form.budget || "Not specified",
+          "CSR Objectives / Requirements": form.message.trim(),
         },
       });
 
       setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (err) {
+      setForm(initialForm);
+    } catch (submissionError) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to submit your enquiry. Please try again.",
+        submissionError?.message ||
+        "We could not submit your enquiry. Please try again or contact our CSR team directly."
       );
     } finally {
-      setIsSending(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleReset = () => {
-    setForm(initialForm);
-    setSubmitted(false);
-    setError("");
-  };
-
   return (
-    <main className="min-h-screen bg-[#f8faf7] text-slate-800">
+    <main className="min-h-screen overflow-hidden bg-white text-slate-800">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#14532d] px-5 py-16 text-white sm:py-20">
-        <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-green-400/10 blur-3xl" />
+      <section className="relative isolate overflow-hidden bg-[#14532d] px-5 py-16 text-white sm:py-24">
+        <div className="pointer-events-none absolute -right-24 -top-24 -z-10 h-96 w-96 rounded-full bg-lime-300/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-36 left-1/4 -z-10 h-96 w-96 rounded-full bg-emerald-300/10 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl">
-          <Link
-            to="/"
-            className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-green-100 transition hover:text-white"
-          >
-            <ArrowLeft size={17} />
-            Back to Home
+        <div className="mx-auto max-w-7xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-green-100">
+            <HeartHandshake size={17} />
+            CSR Partnership
+          </div>
+
+          <h1 className="mt-6 max-w-4xl text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
+            Partner with Purpose.
+            <span className="block text-green-200">
+              Empower Education. Transform Lives.
+            </span>
+          </h1>
+
+          <p className="mt-6 max-w-3xl text-base leading-8 text-green-50 sm:text-lg">
+            Be The Change Foundation partners with forward-thinking
+            organisations to create measurable, sustainable, and high-impact
+            educational change across Maharashtra.
+          </p>
+
+          <div className="mt-9 flex flex-wrap gap-4">
+            <a
+              href="#csr-enquiry"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 font-bold text-green-900 transition hover:bg-green-50"
+            >
+              Apply for CSR Partnership
+              <ArrowRight size={18} />
+            </a>
+
+            <a
+              href="#csr-focus-areas"
+              className="inline-flex items-center gap-2 rounded-lg border border-white/40 px-6 py-3.5 font-bold text-white transition hover:bg-white/10"
+            >
+              Explore Focus Areas
+              <ArrowRight size={18} />
+            </a>
+          </div>
+
+          <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-white/15 pt-6 text-sm text-green-100">
+            <span className="inline-flex items-center gap-2">
+              <GraduationCap size={18} />
+              Education-focused initiatives
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <MapPin size={18} />
+              Working across Maharashtra
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* Breadcrumb */}
+      <div className="border-b border-slate-100 bg-white px-5 py-4">
+        <div className="mx-auto flex max-w-7xl items-center gap-2 text-sm text-slate-500">
+          <Link to="/" className="transition hover:text-green-700">
+            Home
           </Link>
+          <span>/</span>
+          <span className="font-semibold text-green-800">
+            CSR Partnership
+          </span>
+        </div>
+      </div>
 
-          <div className="flex max-w-3xl items-start gap-4">
-            <div className="hidden rounded-2xl bg-white/10 p-4 sm:block">
-              <Handshake size={36} />
-            </div>
+      {/* Introduction */}
+      <section className="px-5 py-16 sm:py-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-green-700">
+              Be The Change Foundation
+            </p>
 
-            <div>
-              <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-green-200">
-                Corporate Social Responsibility
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
+              Best Education-Based NGO in Maharashtra
+            </h2>
+
+            <h3 className="mt-4 text-xl font-semibold text-green-800">
+              Working Across the State to Strengthen Education
+            </h3>
+
+            <div className="mt-5 h-1 w-16 rounded-full bg-green-700" />
+
+            <p className="mt-6 leading-8 text-slate-600">
+              In today&apos;s world, CSR is not just a legal obligation, it
+              is a legacy. At Be The Change Foundation, we partner with
+              forward-thinking organisations to create measurable,
+              sustainable, and high-impact educational change across
+              Maharashtra.
+            </p>
+
+            <p className="mt-4 leading-8 text-slate-600">
+              From villages to cities, we are creating access, equity, and
+              opportunity through education.
+            </p>
+
+            <a
+              href="#csr-enquiry"
+              className="mt-7 inline-flex items-center gap-2 font-bold text-green-800 transition hover:text-green-950"
+            >
+              Start a CSR Conversation
+              <ArrowRight size={18} />
+            </a>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-3 rounded-3xl bg-green-100/70" />
+
+            <div className="relative overflow-hidden rounded-2xl border border-green-100 bg-gradient-to-br from-green-50 via-white to-lime-50 p-7 sm:p-10">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-green-800 text-white">
+                <GraduationCap size={34} />
+              </div>
+
+              <h3 className="mt-6 text-2xl font-extrabold leading-snug text-slate-900">
+                Let&apos;s Build a Smarter Tomorrow — Together
+              </h3>
+
+              <p className="mt-4 leading-8 text-slate-600">
+                Your CSR can help support educational opportunities,
+                strengthen learning environments, and create pathways for
+                students and young people.
               </p>
 
-              <h1 className="text-3xl font-extrabold leading-tight sm:text-5xl">
-                Apply for CSR Partnership
-              </h1>
-
-              <p className="mt-5 max-w-2xl text-base leading-8 text-green-50 sm:text-lg">
-                Partner with Be The Change Foundation to support meaningful
-                community initiatives and create sustainable social impact
-                across India.
-              </p>
+              <div className="mt-7 space-y-4">
+                {[
+                  "Access to education",
+                  "Equity and opportunity",
+                  "Sustainable educational change",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <CheckCircle2
+                      size={20}
+                      className="shrink-0 text-green-700"
+                    />
+                    <span className="font-medium text-slate-700">
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="px-5 py-12 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.75fr_1.25fr]">
-          {/* Information panel — preserved */}
-          <aside>
-            <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
-              <span className="inline-flex rounded-full bg-green-50 p-3 text-green-800">
-                <Building2 size={25} />
-              </span>
+      {/* Core Focus Areas */}
+      <section
+        id="csr-focus-areas"
+        className="scroll-mt-20 bg-[#f7faf6] px-5 py-16 sm:py-20"
+      >
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            eyebrow="Our Core Focus Areas"
+            title="Creating Opportunities Through Education"
+            description="Our education-focused CSR initiatives aim to strengthen learning, encourage student development, and expand opportunities for young people across Maharashtra."
+          />
 
-              <h2 className="mt-5 text-2xl font-bold text-slate-900">
-                Let's create change together
-              </h2>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {coreFocusAreas.map((area) => {
+              const Icon = area.icon;
 
-              <p className="mt-4 leading-7 text-slate-600">
-                Share your organisation's CSR priorities with us. The
-                information below can help outline the initiative, communities
-                you want to support, and your proposed timeline.
-              </p>
+              return (
+                <article
+                  key={area.number}
+                  className="group rounded-2xl border border-slate-200 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-lg sm:p-7"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="inline-flex rounded-xl bg-green-50 p-3 text-green-800 transition group-hover:bg-green-100">
+                      <Icon size={26} strokeWidth={1.8} />
+                    </span>
 
-              <div className="mt-7 space-y-5">
-                <div className="flex gap-3">
+                    <span className="text-sm font-bold tracking-wider text-green-700/60">
+                      {area.number}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-5 text-lg font-bold text-slate-900">
+                    {area.title}
+                  </h3>
+
+                  <p className="mt-1 text-sm font-semibold text-green-800">
+                    {area.subtitle}
+                  </p>
+
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    {area.description}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+
+          <p className="mt-8 text-center leading-7 text-slate-600">
+            From villages to cities, we are creating access, equity, and
+            opportunity through education.
+          </p>
+        </div>
+      </section>
+
+      {/* Why Corporates Choose Us */}
+      <section className="px-5 py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            eyebrow="Why Corporates Choose Us"
+            title="A Partnership Built on Trust and Purpose"
+            description="With strong governance, transparent operations, and scalable programs, we enable corporates to fulfil their CSR goals while transforming communities."
+          />
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {partnershipBenefits.map((benefit) => {
+              const Icon = benefit.icon;
+
+              return (
+                <article
+                  key={benefit.title}
+                  className="rounded-2xl border border-slate-200 bg-white p-7 transition hover:border-green-200 hover:shadow-md"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-800">
+                    <Icon size={25} />
+                  </div>
+
+                  <h3 className="mt-5 text-lg font-bold text-slate-900">
+                    {benefit.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    {benefit.description}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Fund Us Through CSR */}
+      <section className="bg-[#14532d] px-5 py-16 text-white sm:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-green-200">
+              Why Fund Us Through CSR?
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight sm:text-4xl">
+              Supporting Education With Accountability
+            </h2>
+
+            <p className="mt-5 leading-8 text-green-50">
+              Be The Change Foundation highlights governance, compliance,
+              transparent reporting, and implementation capability as
+              important parts of its CSR partnerships.
+            </p>
+
+            <a
+              href="#csr-enquiry"
+              className="mt-7 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 font-bold text-green-900 transition hover:bg-green-50"
+            >
+              Discuss Your CSR Goals
+              <ArrowRight size={18} />
+            </a>
+          </div>
+
+          <div className="rounded-2xl border border-white/15 bg-white/5 p-6 sm:p-8">
+            <h3 className="text-xl font-bold">
+              Foundation Credentials & Capabilities
+            </h3>
+
+            <div className="mt-6 space-y-5">
+              {credentials.map((credential) => (
+                <div
+                  key={credential}
+                  className="flex items-start gap-3"
+                >
                   <CheckCircle2
-                    className="mt-1 shrink-0 text-green-700"
-                    size={20}
+                    size={21}
+                    className="mt-0.5 shrink-0 text-green-200"
                   />
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Purpose-led projects
-                    </h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">
-                      Identify a social development focus that aligns with
-                      your organisation's priorities.
-                    </p>
+
+                  <p className="leading-7 text-green-50">{credential}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Expected Outcomes */}
+      <section className="px-5 py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            eyebrow="Expected Impact"
+            title="Your CSR Investment Can Contribute To"
+            description="Through education-focused initiatives, CSR partnerships can help support the following intended outcomes."
+          />
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {expectedOutcomes.map((outcome) => {
+              const Icon = outcome.icon;
+
+              return (
+                <article
+                  key={outcome.title}
+                  className="rounded-2xl border border-slate-200 bg-white p-6 text-center transition hover:-translate-y-1 hover:border-green-200 hover:shadow-md"
+                >
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-green-50 text-green-800">
+                    <Icon size={28} />
                   </div>
+
+                  <h3 className="mt-5 font-bold text-slate-900">
+                    {outcome.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    {outcome.description}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* CSR Enquiry Form */}
+      <section
+        id="csr-enquiry"
+        className="scroll-mt-20 bg-[#f7faf6] px-5 py-16 sm:py-20"
+      >
+        <div className="mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-green-700">
+              Contact for CSR Partnerships
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
+              Let&apos;s Build a Smarter Tomorrow — Together
+            </h2>
+
+            <p className="mt-5 leading-8 text-slate-600">
+              Your CSR can help change lives. Join hands with Be The Change
+              Foundation and be a catalyst for educational transformation
+              in Maharashtra.
+            </p>
+
+            <div className="mt-8 rounded-2xl border border-green-100 bg-white p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-800">
+                  <Handshake size={25} />
                 </div>
 
-                <div className="flex gap-3">
-                  <MapPin
-                    className="mt-1 shrink-0 text-green-700"
-                    size={20}
-                  />
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Community-focused impact
-                    </h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">
-                      Describe the region and communities you would like to
-                      support.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <Handshake
-                    className="mt-1 shrink-0 text-green-700"
-                    size={20}
-                  />
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Collaborative approach
-                    </h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">
-                      Provide the details needed to discuss a possible
-                      partnership.
-                    </p>
-                  </div>
+                <div>
+                  <p className="text-sm text-slate-500">CSR Team</p>
+                  <h3 className="font-bold text-slate-900">
+                    Abhishek Tupe | Mayur Dhokchaule
+                  </h3>
                 </div>
               </div>
 
-              <div className="mt-8 rounded-xl bg-green-50 p-5">
-                <h3 className="font-bold text-green-950">
-                  Learn more about CSR
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-green-900">
-                  Understand the purpose of CSR and explore our focus areas
-                  before submitting your enquiry.
-                </p>
-
-                <Link
-                  to="/learn-about-csr"
-                  className="mt-4 inline-flex items-center gap-2 font-bold text-green-800 hover:text-green-950"
+              <div className="mt-6 space-y-4">
+                <a
+                  href="tel:+918796696960"
+                  className="flex items-center gap-3 text-slate-700 transition hover:text-green-800"
                 >
-                  Learn About CSR <ArrowRight size={17} />
-                </Link>
+                  <Phone size={19} className="shrink-0 text-green-700" />
+                  <span>8796696960</span>
+                  <ArrowUpRight size={15} className="ml-auto" />
+                </a>
+
+                <a
+                  href="tel:+919067498721"
+                  className="flex items-center gap-3 text-slate-700 transition hover:text-green-800"
+                >
+                  <Phone size={19} className="shrink-0 text-green-700" />
+                  <span>9067498721</span>
+                  <ArrowUpRight size={15} className="ml-auto" />
+                </a>
+
+                <a
+                  href="https://bethechange.org.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-slate-700 transition hover:text-green-800"
+                >
+                  <MapPin size={19} className="shrink-0 text-green-700" />
+                  <span>bethechange.org.in</span>
+                  <ArrowUpRight size={15} className="ml-auto" />
+                </a>
               </div>
             </div>
-          </aside>
 
-          {/* CSR enquiry form */}
-          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 sm:p-8 lg:p-10">
+            <div className="mt-5 flex items-start gap-3 rounded-xl bg-green-50 p-5">
+              <ShieldCheck
+                size={22}
+                className="mt-0.5 shrink-0 text-green-800"
+              />
+              <p className="text-sm leading-7 text-slate-600">
+                Share your CSR requirements so the team can understand your
+                organisation&apos;s objectives and preferred education
+                initiatives.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+            <div className="mb-7">
+              <h3 className="text-2xl font-extrabold text-slate-900">
+                Quick CSR Enquiry
+              </h3>
+
+              <p className="mt-2 text-sm leading-7 text-slate-500">
+                Tell us about your organisation and the CSR initiative you
+                would like to explore.
+              </p>
+            </div>
+
             {submitted ? (
-              <div className="py-10 text-center">
-                <CheckCircle2
-                  size={54}
-                  className="mx-auto text-green-700"
-                />
+              <div
+                role="status"
+                className="rounded-xl border border-green-200 bg-green-50 p-6"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-800">
+                  <CheckCircle2 size={28} />
+                </div>
 
-                <h2 className="mt-5 text-2xl font-bold text-slate-900">
+                <h4 className="mt-4 text-xl font-bold text-green-900">
                   Enquiry Submitted Successfully
-                </h2>
+                </h4>
 
-                <p className="mx-auto mt-3 max-w-lg leading-7 text-slate-600">
-                  Thank you for contacting Be The Change Foundation about a
-                  CSR partnership. The email service accepted your request.
-                  Our team aims to respond within 24–48 working hours.
+                <p className="mt-3 leading-7 text-green-800">
+                  Thank you for your interest in partnering with Be The
+                  Change Foundation. Your enquiry has been accepted by the
+                  email service.
                 </p>
 
                 <button
                   type="button"
-                  onClick={handleReset}
-                  className="mt-7 rounded-lg bg-green-700 px-6 py-3 font-semibold text-white transition hover:bg-green-800"
+                  onClick={() => setSubmitted(false)}
+                  className="mt-5 inline-flex items-center gap-2 font-bold text-green-900 hover:underline"
                 >
-                  Submit Another Enquiry
+                  Submit another enquiry <ArrowRight size={17} />
                 </button>
               </div>
             ) : (
-              <>
-                <div className="mb-8">
-                  <p className="text-sm font-bold uppercase tracking-widest text-green-700">
-                    CSR / Partnership Enquiry
-                  </p>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <FormField label="Contact Person Name" required>
+                    <input
+                      type="text"
+                      name="contactPerson"
+                      autoComplete="name"
+                      value={form.contactPerson}
+                      onChange={handleChange}
+                      className={inputClasses}
+                      placeholder="Enter your full name"
+                      required
+                      maxLength={120}
+                    />
+                  </FormField>
 
-                  <h2 className="mt-2 text-2xl font-extrabold text-slate-900 sm:text-3xl">
-                    CSR Partnership Enquiry
-                  </h2>
-
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
-                    Share your CSR objective and our team will get back with
-                    a suitable proposal.
-                  </p>
+                  <FormField label="Company / Organization" required>
+                    <input
+                      type="text"
+                      name="organisation"
+                      autoComplete="organization"
+                      value={form.organisation}
+                      onChange={handleChange}
+                      className={inputClasses}
+                      placeholder="Organization name"
+                      required
+                      maxLength={180}
+                    />
+                  </FormField>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <input
-                    className={inputClass}
-                    type="text"
-                    name="contactPerson"
-                    value={form.contactPerson}
-                    onChange={handleChange}
-                    placeholder="Contact Person Name*"
-                    autoComplete="name"
-                    maxLength={120}
-                    required
-                  />
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <FormField label="Official Email ID" required>
+                    <input
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      className={inputClasses}
+                      placeholder="name@company.com"
+                      required
+                      maxLength={254}
+                    />
+                  </FormField>
 
-                  <input
-                    className={inputClass}
-                    type="text"
-                    name="organisation"
-                    value={form.organisation}
-                    onChange={handleChange}
-                    placeholder="Company / Organization*"
-                    autoComplete="organization"
-                    maxLength={200}
-                    required
-                  />
+                  <FormField label="Contact Number" required>
+                    <input
+                      type="tel"
+                      name="phone"
+                      autoComplete="tel"
+                      value={form.phone}
+                      onChange={handleChange}
+                      className={inputClasses}
+                      placeholder="Enter contact number"
+                      required
+                      maxLength={20}
+                      pattern="[+0-9() -]{7,20}"
+                      title="Enter a valid phone number."
+                    />
+                  </FormField>
+                </div>
 
-                  <input
-                    className={inputClass}
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="Official Email ID*"
-                    autoComplete="email"
-                    maxLength={254}
-                    required
-                  />
-
-                  <input
-                    className={inputClass}
-                    type="tel"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="Contact Number*"
-                    autoComplete="tel"
-                    pattern="[+]?[0-9 ()-]{10,20}"
-                    title="Enter a valid contact number."
-                    required
-                  />
-
+                <FormField label="CSR Focus Area" required>
                   <select
-                    className={`${inputClass} ${
-                      form.focusArea ? "" : "text-slate-900"
-                    }`}
                     name="focusArea"
                     value={form.focusArea}
                     onChange={handleChange}
+                    className={inputClasses}
                     required
                   >
-                    <option value="">CSR Focus Area*</option>
+                    <option value="">Select a CSR focus area</option>
 
                     {focusAreas.map((area) => (
                       <option key={area} value={area}>
@@ -337,86 +794,113 @@ export default function ApplyCSR() {
                       </option>
                     ))}
                   </select>
+                </FormField>
 
+                <FormField label="Approximate CSR Budget (Optional)">
                   <select
-                    className={`${inputClass} ${
-                      form.budget ? "" : "text-slate-900"
-                    }`}
                     name="budget"
                     value={form.budget}
                     onChange={handleChange}
+                    className={inputClasses}
                   >
-                    <option value="">
-                      Approx CSR Budget (optional)
-                    </option>
-                    <option value="Below ₹5 lakh">Below ₹5 lakh</option>
-                    <option value="₹5–10 lakh">₹5–10 lakh</option>
-                    <option value="₹10–25 lakh">₹10–25 lakh</option>
-                    <option value="₹25–50 lakh">₹25–50 lakh</option>
-                    <option value="Above ₹50 lakh">Above ₹50 lakh</option>
-                    <option value="To be discussed">To be discussed</option>
-                  </select>
+                    <option value="">Select an approximate budget</option>
 
+                    {budgetOptions.map((budget) => (
+                      <option key={budget} value={budget}>
+                        {budget}
+                      </option>
+                    ))}
+                  </select>
+                </FormField>
+
+                <FormField
+                  label="CSR Objectives / Requirements"
+                  required
+                >
                   <textarea
-                    className={`${inputClass} min-h-24 resize-y`}
                     name="message"
                     value={form.message}
                     onChange={handleChange}
-                    placeholder="Briefly describe your CSR objective, preferred location, or timeline*"
-                    minLength={10}
-                    maxLength={2000}
+                    className={`${inputClasses} min-h-32 resize-y`}
+                    placeholder="Tell us about your CSR objectives, preferred location, target students, or project requirements."
+                    rows={5}
                     required
+                    maxLength={3000}
                   />
+                </FormField>
 
-                  {error && (
-                    <p
-                      role="alert"
-                      className="rounded-md bg-red-50 px-3 py-2 text-sm leading-6 text-red-700"
-                    >
-                      {error}
-                    </p>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={isSending}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#e73549] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#ca293c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                {error && (
+                  <div
+                    role="alert"
+                    className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700"
                   >
-                    {isSending ? "Sending Enquiry..." : "Submit CSR Enquiry"}
-                    {!isSending && <ArrowRight size={16} />}
-                  </button>
+                    {error}
+                  </div>
+                )}
 
-                  <p className="text-xs leading-5 text-slate-600">
-                    This enquiry reaches our CSR team directly. We respond
-                    within 24–48 working hours.
-                  </p>
-                </form>
-              </>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-green-800 px-6 py-3.5 font-bold text-white transition hover:bg-green-900 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <LoaderCircle size={19} className="animate-spin" />
+                      Submitting Enquiry...
+                    </>
+                  ) : (
+                    <>
+                      Submit CSR Enquiry
+                      <Send size={18} />
+                    </>
+                  )}
+                </button>
+
+                <p className="text-center text-xs leading-6 text-slate-500">
+                  Your enquiry will be sent to the configured foundation
+                  email address. Please avoid including sensitive personal
+                  information.
+                </p>
+              </form>
             )}
           </div>
         </div>
       </section>
 
-      {/* Learn About CSR section — preserved */}
-      <section className="bg-white px-5 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Want to understand our CSR approach first?
+      {/* Final CTA */}
+      <section className="px-5 pb-16 sm:pb-20">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 rounded-3xl bg-[#14532d] p-7 text-white sm:p-10 lg:flex-row lg:items-center lg:p-14">
+          <div className="max-w-2xl">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-green-200">
+              Partner With Purpose
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight sm:text-4xl">
+              Let&apos;s Transform Education Across Maharashtra
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Explore our focus areas and the role of responsible community
-              development.
+            <p className="mt-4 leading-8 text-green-50">
+              Join hands with Be The Change Foundation to support educational
+              transformation and create opportunities for students and
+              communities.
             </p>
           </div>
 
-          <Link
-            to="/learn-about-csr"
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-green-700 px-5 py-3 font-semibold text-green-800 transition hover:bg-green-50"
-          >
-            Learn About CSR <ArrowRight size={17} />
-          </Link>
+          <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:flex-row">
+            <a
+              href="#csr-enquiry"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 font-bold text-green-900 transition hover:bg-green-50"
+            >
+              Apply for CSR <ArrowRight size={18} />
+            </a>
+
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 px-6 py-3.5 font-bold text-white transition hover:bg-white/10"
+            >
+              Back to Home
+            </Link>
+          </div>
         </div>
       </section>
     </main>

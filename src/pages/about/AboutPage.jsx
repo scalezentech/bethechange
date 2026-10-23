@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import LeadershipPage from "../home/LeadershipPage";
+import { Link } from "react-router-dom";
 
 const impactAreas = [
   {
@@ -131,12 +132,12 @@ export default function AboutPage() {
                 <ArrowRight size={17} aria-hidden="true" />
               </a>
 
-              <a
-                href="/contact-us.html"
+              <Link
+                to="/contact-us"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/25 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/60 hover:bg-white/5"
               >
                 Get Involved
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -404,13 +405,13 @@ export default function AboutPage() {
           </div>
 
           <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:flex-row">
-            <a
-              href="/contact-us"
+            <Link
+              to="/contact-us"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[#ffdc62] px-6 py-3 text-sm font-bold text-[#173d2b] transition hover:bg-yellow-300"
             >
               Contact Us
               <ArrowRight size={17} aria-hidden="true" />
-            </a>
+            </Link>
 
             <a
               href="https://razorpay.me/@bethechangefoundation5072"

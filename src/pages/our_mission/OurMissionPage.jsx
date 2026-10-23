@@ -14,7 +14,7 @@ const OurMission = () => {
                     "Our vision is empowerment of society through incorporating better innovative practices, modern technology and values. Our dream is to make the world better place and to catalyse a lasting, irreversible change for the good. BTC is a not for profit foundation which focuses on real-time and result oriented efforts. The BTCF team comprises of 100 highly qualified and experienced professionals who are committed to educational development and social transformation. It aims to provide the extra mile benefit to under privileged section."
                 ]}
                 primaryButtonText="Who We Are?"
-                primaryButtonLink="/about-us.html"
+                primaryButtonLink="/about-us"
                 secondaryButtonText="Donate for Nature"
                 secondaryButtonLink="https://razorpay.me/@bethechangefoundation5072"
                 contentPosition="right"

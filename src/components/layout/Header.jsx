@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import {
     Languages,
@@ -59,8 +59,8 @@ const projects = [
         href: "https://sparshart.com/",
         external: true,
     },
-    { label: "Tree Plantation", href: "#" },
-    { label: "Educational Awareness", href: "#" },
+    { label: "Tree Plantation", href: "/#tree-plantation" },
+    { label: "Educational Awareness", href: "/#education-awareness" },
     { label: "Our Programs", href: "/our-programs" },
     { label: "Krushisetu", href: "https://www.krushisetu.org" },
 ];
@@ -113,7 +113,7 @@ const isDesktop = () =>
 
 const t = (seconds) =>
     typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ? 0
         : seconds;
 
@@ -133,6 +133,8 @@ function isActiveRoute(pathname, href) {
    Reusable navigation link
 -------------------------------------------------- */
 
+
+
 function HeaderLink({
     href,
     children,
@@ -141,6 +143,9 @@ function HeaderLink({
     onClick,
     ...props
 }) {
+    const navigate = useNavigate();
+    const isHashLink = /^\/?#/.test(href || "");
+
     if (external || /^https?:\/\//i.test(href || "")) {
         return (
             <a
@@ -156,15 +161,35 @@ function HeaderLink({
         );
     }
 
-    if (href === "#") {
+    if (isHashLink) {
+        const navigate = useNavigate();
+
+        const handleHashClick = (event) => {
+            event.preventDefault();
+
+            const targetId = href.split("#")[1];
+
+            onClick?.(event);
+
+            if (window.location.pathname !== "/") {
+                navigate("/", {
+                    state: { scrollToId: targetId },
+                });
+
+                return;
+            }
+
+            document.getElementById(targetId)?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        };
+
         return (
             <a
-                href="#"
+                href={href}
                 className={className}
-                onClick={(event) => {
-                    event.preventDefault();
-                    onClick?.(event);
-                }}
+                onClick={handleHashClick}
                 {...props}
             >
                 {children}
@@ -183,6 +208,8 @@ function HeaderLink({
         </Link>
     );
 }
+
+
 
 /* --------------------------------------------------
    Dropdown
@@ -333,9 +360,8 @@ function Dropdown({ label, items, pathname, onNavigate }) {
                     size={15}
                     strokeWidth={2}
                     aria-hidden="true"
-                    className={`shrink-0 transition-transform duration-300 ${
-                        isOpen ? "rotate-180" : ""
-                    }`}
+                    className={`shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                        }`}
                 />
             </button>
 
@@ -366,10 +392,9 @@ function Dropdown({ label, items, pathname, onNavigate }) {
                                     flex items-center gap-3 border-l-[3px]
                                     px-4 py-2.5 text-sm transition-colors
                                     focus-visible:bg-green-50 focus-visible:outline-none
-                                    ${
-                                        active
-                                            ? "border-green-700 bg-green-50 font-semibold text-green-800"
-                                            : "border-transparent text-gray-700 hover:bg-green-50 hover:text-green-800"
+                                    ${active
+                                        ? "border-green-700 bg-green-50 font-semibold text-green-800"
+                                        : "border-transparent text-gray-700 hover:bg-green-50 hover:text-green-800"
                                     }
                                 `}
                             >
@@ -593,10 +618,9 @@ export default function Header() {
             text-white transition-colors duration-200 hover:bg-white/10
             focus-visible:outline-2 focus-visible:outline-offset-[-2px]
             focus-visible:outline-white
-            ${
-                active
-                    ? "bg-white/15 after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[3px] after:rounded-full after:bg-red-500"
-                    : ""
+            ${active
+                ? "bg-white/15 after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[3px] after:rounded-full after:bg-red-500"
+                : ""
             }
         `;
     };
@@ -681,9 +705,8 @@ export default function Header() {
                                 <ChevronDown
                                     size={13}
                                     aria-hidden="true"
-                                    className={`transition-transform duration-300 ${
-                                        languageMenuOpen ? "rotate-180" : ""
-                                    }`}
+                                    className={`transition-transform duration-300 ${languageMenuOpen ? "rotate-180" : ""
+                                        }`}
                                 />
                             </button>
 
