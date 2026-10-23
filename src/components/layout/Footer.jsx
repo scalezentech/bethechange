@@ -395,7 +395,6 @@ export default function Footer() {
       {/* COPYRIGHT AND LEGAL LINKS */}
 
       <div
-        data-footer-legal
         className="border-t border-slate-200 bg-white"
       >
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-5 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
