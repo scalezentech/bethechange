@@ -23,6 +23,7 @@ import ScrollTop from "./components/common/ScrollTop";
 import GoogleTranslate from "./components/common/language/GoogleTranslate";
 import ApplyCSR from "./pages/csr/ApplyForCSR";
 import LearnAboutCSR from "./pages/csr/LearnAboutCSR";
+import CustomCursor from "./components/common/CustomCursor";
 
 function App() {
     const [preloaderVisible, setPreloaderVisible] = useState(() => {
@@ -59,6 +60,8 @@ function App() {
             {/* Keep the site mounted and visible behind the preloader. */}
             <div data-site-content>
                 <GoogleTranslate />
+
+                <CustomCursor />
                 <ScrollTop />
 
                 {animationsEnabled && <GlobalAnimations />}

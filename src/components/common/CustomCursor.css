@@ -1,0 +1,96 @@
+
+/* ========================================
+   Custom Cursor - Electric Orange
+   ======================================== */
+
+/* Cursor elements never intercept clicks or navigation. */
+.custom-cursor-container {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Main orange cursor dot */
+.custom-cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ff7a00;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity, width, height;
+    transition:
+        opacity 180ms ease,
+        width 220ms ease,
+        height 220ms ease,
+        background-color 220ms ease;
+}
+
+/* Smooth trailing orange ring */
+.custom-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid rgb(255 122 0 / 80%);
+    border-radius: 50%;
+    background: rgb(255 122 0 / 6%);
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity, width, height;
+    transition:
+        opacity 180ms ease,
+        width 220ms ease,
+        height 220ms ease,
+        background-color 220ms ease,
+        border-color 220ms ease;
+}
+
+/* Hide the native cursor only on supported mouse devices. */
+@media (hover: hover) and (pointer: fine) {
+    html.custom-cursor-enabled,
+    html.custom-cursor-enabled body,
+    html.custom-cursor-enabled body a,
+    html.custom-cursor-enabled body button,
+    html.custom-cursor-enabled body input,
+    html.custom-cursor-enabled body textarea,
+    html.custom-cursor-enabled body select,
+    html.custom-cursor-enabled body [role="button"] {
+        cursor: none !important;
+    }
+}
+
+/* Fade in after the first pointer movement */
+.custom-cursor-dot.custom-cursor-visible,
+.custom-cursor-ring.custom-cursor-visible {
+    opacity: 1;
+}
+
+/* Brighter orange dot on hover */
+.custom-cursor-dot.custom-cursor-hover {
+    width: 20px;
+    height: 20px;
+    background: #ffb347;
+}
+
+/* Expand the ring over interactive elements */
+.custom-cursor-ring.custom-cursor-hover {
+    width: 54px;
+    height: 54px;
+    border-color: rgb(255 179 71 / 95%);
+    background: rgb(255 122 0 / 15%);
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .custom-cursor-dot,
+    .custom-cursor-ring {
+        transition: none;
+    }
+}
