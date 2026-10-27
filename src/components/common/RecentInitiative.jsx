@@ -50,12 +50,12 @@ export default function RecentInitiative({
         >
           <div
             className={`mx-auto w-full overflow-hidden rounded-2xl shadow-[0_15px_30px_rgba(0,0,0,0.16)] ${
-              isHorizontal ? "max-w-[640px]" : "max-w-[435px]"
+              isHorizontal ? "max-w-[640px]" : "max-w-[300px]"
             }`}
           >
             <div
               className={`relative w-full bg-black ${
-                isHorizontal ? "aspect-video" : "aspect-[9/16]"
+                isHorizontal ? "aspect-video max-h-[360px]" : "aspect-[9/16] "
               }`}
             >
               {videoId ? (

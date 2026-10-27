@@ -340,7 +340,7 @@ function Dropdown({ label, items, pathname, onNavigate }) {
                 onClick={handleButtonClick}
                 className={`
                     relative flex w-full items-center justify-center gap-2
-                    px-4 py-3 text-sm font-semibold text-white
+                    px-4 py-3 text-base font-semibold text-white
                     transition-colors duration-200 hover:bg-white/10
                     focus-visible:outline-2 focus-visible:outline-offset-[-2px]
                     focus-visible:outline-white lg:w-auto
@@ -614,7 +614,7 @@ export default function Header() {
         const active = isActiveRoute(pathname, href);
 
         return `
-            relative px-4 py-3 text-center text-sm font-semibold
+            relative px-4 py-3 text-center text-base font-semibold
             text-white transition-colors duration-200 hover:bg-white/10
             focus-visible:outline-2 focus-visible:outline-offset-[-2px]
             focus-visible:outline-white
