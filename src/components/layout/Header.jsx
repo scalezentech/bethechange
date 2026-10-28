@@ -340,7 +340,7 @@ function Dropdown({ label, items, pathname, onNavigate }) {
                 onClick={handleButtonClick}
                 className={`
                     relative flex w-full items-center justify-center gap-2
-                    px-4 py-3 text-base font-semibold text-white
+                    px-4 py-1 text-base font-semibold text-white
                     transition-colors duration-200 hover:bg-white/10
                     focus-visible:outline-2 focus-visible:outline-offset-[-2px]
                     focus-visible:outline-white lg:w-auto
@@ -614,7 +614,7 @@ export default function Header() {
         const active = isActiveRoute(pathname, href);
 
         return `
-            relative px-4 py-3 text-center text-base font-semibold
+            relative px-4 py-1 text-center text-base font-semibold
             text-white transition-colors duration-200 hover:bg-white/10
             focus-visible:outline-2 focus-visible:outline-offset-[-2px]
             focus-visible:outline-white
@@ -639,7 +639,7 @@ export default function Header() {
         >
             {/* Top information bar */}
             <div className="border-b border-white/15">
-                <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-3 sm:flex-row lg:px-6">
+                <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-2 sm:flex-row lg:px-6">
                     {/* Social links */}
                     <div className="flex items-center gap-1">
                         {socialLinks.map(({ label, href, Icon }) => (
@@ -650,7 +650,7 @@ export default function Header() {
                                 rel="noopener noreferrer"
                                 aria-label={label}
                                 title={label}
-                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#147D4B] text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#09683C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#147D4B] text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#09683C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                             >
                                 <Icon size={20} aria-hidden="true" />
                             </a>
@@ -772,14 +772,14 @@ export default function Header() {
                 <img
                     src={mobileHeaderImage}
                     alt="Be The Change Foundation"
-                    className="h-auto w-full object-cover md:hidden"
+                    className="h-auto max-h-[80px] w-full object-cover md:hidden"
                     fetchPriority="high"
                 />
 
                 <img
                     src={desktopHeaderImage}
                     alt="Be The Change Foundation"
-                    className="hidden h-auto w-full object-cover md:block"
+                    className="hidden h-auto max-h-[105px] w-full object-cover md:block"
                     fetchPriority="high"
                 />
             </div>
@@ -875,12 +875,12 @@ export default function Header() {
                         </HeaderLink>
 
                         {/* Donate button */}
-                        <div className="flex justify-center px-4 py-3 lg:pl-3 lg:pr-0">
+                        <div className="flex justify-center px-4 py-2 lg:pl-3 lg:pr-0">
                             <HeaderLink
                                 href="https://razorpay.me/@bethechangefoundation5072"
                                 external
                                 onClick={closeMobileMenu}
-                                className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-8 py-2.5 text-sm font-bold text-white transition duration-200 hover:scale-105 hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-8 py-2 text-sm font-bold text-white transition duration-200 hover:scale-105 hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                             >
                                 <Heart
                                     size={18}

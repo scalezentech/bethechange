@@ -273,7 +273,7 @@ export default function HeroSlider() {
         >
             <div
                 ref={stageRef}
-                className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-video lg:aspect-[5/3] bg-white"
+                className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-video lg:aspect-[16/9] bg-white"
                 style={{ perspective: "2000px" }}
             >
                 {/* Current flyer */}
@@ -281,7 +281,7 @@ export default function HeroSlider() {
                     ref={currentImageRef}
                     src={slides[activeIndex]}
                     alt={`Be The Change Foundation flyer ${activeIndex + 1}`}
-                    className="absolute inset-0 h-full w-full object-contain drop-shadow-2xl"
+                    className="absolute inset-0 h-full w-full object-cover drop-shadow-2xl"
                     style={{
                         backfaceVisibility: "hidden",
                         transformStyle: "preserve-3d",
@@ -296,7 +296,7 @@ export default function HeroSlider() {
                     src={slides[activeIndex]}
                     alt=""
                     aria-hidden="true"
-                    className="absolute inset-0 h-full w-full object-contain drop-shadow-2xl"
+                    className="absolute inset-0 h-full w-full object-cover drop-shadow-2xl"
                     style={{
                         opacity: 0,
                         visibility: "hidden",

@@ -129,7 +129,7 @@ export default function HomePage() {
 
     return (
         <main className="w-full">
-            <section className="relative isolate overflow-hidden py-10 sm:py-12 lg:min-h-160 lg:py-15">
+            <section className="relative isolate overflow-hidden py-5 sm:py-3 lg:min-h-130 lg:py-5">
                 {/* Background image */}
                 <div
                     aria-hidden="true"
@@ -196,11 +196,11 @@ export default function HomePage() {
                     </div>
 
                     {/* CTA cards */}
-                    <div className="mx-auto mt-8 grid max-w-5xl gap-5 sm:grid-cols-2 lg:mt-7">
+                    <div className="mx-auto mt-3 grid max-w-5xl gap-5 sm:grid-cols-2 lg:mt-5">
                         {/* Areas of Work */}
                         <Link
                             to="/area-of-work"
-                            className="group flex min-h-29 items-center justify-between gap-4 rounded-xl bg-[#0875e1] px-6 py-5 text-white transition hover:bg-blue-700 sm:px-7"
+                            className="group flex max-h-25 items-center justify-between gap-4 rounded-xl bg-[#0875e1] px-6 py-5 text-white transition hover:bg-blue-700 sm:px-7"
                         >
                             <div>
                                 <h2 className="text-xl font-bold sm:text-2xl">
@@ -224,7 +224,7 @@ export default function HomePage() {
                         {/* Who We Are */}
                         <Link
                             to="/about-us"
-                            className="group flex min-h-29 items-center justify-between gap-4 rounded-xl bg-[#20963d] px-6 py-5 text-white transition hover:bg-green-800 sm:px-7"
+                            className="group flex max-h-25 items-center justify-between gap-4 rounded-xl bg-[#20963d] px-6 py-5 text-white transition hover:bg-green-800 sm:px-7"
                         >
                             <div>
                                 <h2 className="text-xl font-bold sm:text-2xl">
