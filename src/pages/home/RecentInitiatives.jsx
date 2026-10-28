@@ -46,6 +46,19 @@ export default function RecentInitiatives() {
       />
 
       <FeaturedSpeaker
+        name="Hon. Vishal Shende Sir"
+        designation="Assistant Charity Commissioner, Ahilyanagar"
+        description={[
+          "Hon. Vishal Shende Sir shared inspiring thoughts on the importance of teachers, the future of education, leadership, and innovation at the State Teacher Award 2026 in Shirdi.",
+          
+        ]}
+        date="25 October 2026"
+        location="Shirdi, Maharashtra"
+        videoId="Viz5z0LYcTE"
+        videoPosition="right"
+      />
+
+      <FeaturedSpeaker
         name="Hon. Shri Kishor Ramchandra Nirmal"
         designation="Founder Director, Prabhat Dairy Limited; Founder Director, Kisan Connect Safe Food Private Limited"
         description={[
@@ -55,7 +68,7 @@ export default function RecentInitiatives() {
         date="27 September 2026"
         location="Shirdi, Maharashtra"
         videoId="StibVWcQjeY"
-        videoPosition="right"
+        videoPosition="left"
       />
 
       <RecentInitiative

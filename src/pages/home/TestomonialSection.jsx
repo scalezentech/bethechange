@@ -37,6 +37,43 @@ export default function TestimonialsSection() {
             />
 
             <AwardHighlights
+                videoId="oLfCtb6z_GU"
+                title="National Ideal Teachers Award"
+                organization="Be The Change Foundation"
+                description="Watch the highlights of National Ideal Teachers Award 2026 organized by Be The Change Foundation. The event celebrated excellence across social, administrative, educational and art sectors."
+                highlights={[
+                    "National Ideal Teachers Award Ceremony",
+                    "Honouring Excellence",
+                    "Inspirational Success Stories",
+                ]}
+                orientation="horizontal"
+                videoPosition="right"
+            />
+
+            <ParticipantFeedbackVideos
+                title="Participant Feedback Videos"
+                videos={[
+                    {
+                        id: "feedback-1",
+                        videoId: "LLQwFaGHvBk",
+                        title: "Participant feedback 1",
+                    },
+                    {
+                        id: "feedback-2",
+                        videoId: "58UlsupnwRQ",
+                        title: "Participant feedback 2",
+                    },
+                    {
+                        id: "feedback-3",
+                        videoId: "20xzR-ESWtY",
+                        title: "Participant feedback 3",
+                    },
+
+
+                ]}
+            />
+
+            <AwardHighlights
                 videoId="rNix8s-cFCY"
                 title="Maharashtra State Level Teachers"
                 organization="Be The Change Foundation"

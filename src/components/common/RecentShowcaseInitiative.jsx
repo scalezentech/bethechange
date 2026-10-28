@@ -360,6 +360,36 @@ import img18oct2026_16 from "../../assets/images/initiatives/18oct2026/16.jpg";
 import img18oct2026_17 from "../../assets/images/initiatives/18oct2026/17.jpg";
 import img18oct2026_18 from "../../assets/images/initiatives/18oct2026/18.jpg"
 
+import img25oct2026_1 from "../../assets/images/initiatives/25oct2026/1.jpeg";
+import img25oct2026_2 from "../../assets/images/initiatives/25oct2026/2.jpeg";
+import img25oct2026_3 from "../../assets/images/initiatives/25oct2026/3.jpeg";
+import img25oct2026_4 from "../../assets/images/initiatives/25oct2026/4.jpeg";
+import img25oct2026_5 from "../../assets/images/initiatives/25oct2026/5.jpeg";
+import img25oct2026_6 from "../../assets/images/initiatives/25oct2026/6.jpeg";
+import img25oct2026_7 from "../../assets/images/initiatives/25oct2026/7.jpeg";
+import img25oct2026_8 from "../../assets/images/initiatives/25oct2026/8.jpeg";
+import img25oct2026_9 from "../../assets/images/initiatives/25oct2026/9.jpeg";
+import img25oct2026_10 from "../../assets/images/initiatives/25oct2026/10.jpeg";
+import img25oct2026_11 from "../../assets/images/initiatives/25oct2026/11.jpeg";
+import img25oct2026_12 from "../../assets/images/initiatives/25oct2026/12.jpeg";
+import img25oct2026_13 from "../../assets/images/initiatives/25oct2026/13.jpeg";
+import img25oct2026_14 from "../../assets/images/initiatives/25oct2026/14.jpeg";
+import img25oct2026_15 from "../../assets/images/initiatives/25oct2026/15.jpeg";
+import img25oct2026_16 from "../../assets/images/initiatives/25oct2026/16.jpeg";
+import img25oct2026_17 from "../../assets/images/initiatives/25oct2026/17.jpeg";
+import img25oct2026_18 from "../../assets/images/initiatives/25oct2026/18.jpeg";
+import img25oct2026_19 from "../../assets/images/initiatives/25oct2026/19.jpeg";
+import img25oct2026_20 from "../../assets/images/initiatives/25oct2026/20.jpeg";
+import img25oct2026_21 from "../../assets/images/initiatives/25oct2026/21.jpeg";
+import img25oct2026_22 from "../../assets/images/initiatives/25oct2026/22.jpeg";
+import img25oct2026_23 from "../../assets/images/initiatives/25oct2026/23.jpeg";
+import img25oct2026_24 from "../../assets/images/initiatives/25oct2026/24.jpeg";
+import img25oct2026_25 from "../../assets/images/initiatives/25oct2026/25.jpeg";
+import img25oct2026_26 from "../../assets/images/initiatives/25oct2026/26.jpeg";
+import img25oct2026_27 from "../../assets/images/initiatives/25oct2026/27.jpeg";
+
+
+
 
 const RecentShowcaseInitiative = () => {
     return (
@@ -399,6 +429,35 @@ const RecentShowcaseInitiative = () => {
                 description={[
                     "Be The Change Foundation successfully organized the National Teachers Award 2026 on 14th June 2026 in Mumbai. The event was dedicated to recognizing and honoring outstanding educators from across India for their unwavering commitment, innovative teaching practices, and significant contributions to the field of education.",
                     "The prestigious award ceremony brought together 150+ teachers from various states of India, creating a platform to celebrate their remarkable achievements and dedication towards shaping the future of society through quality education. The event served as a tribute to educators who have consistently demonstrated excellence, leadership, and a passion for nurturing young minds.",
+                ]}
+                primaryButtonText="Award Website"
+                primaryButtonLink="https://nationalteacheraward.com/"
+                secondaryButtonText="Know More"
+                secondaryButtonLink="https://bethechange.org.in/"
+                contentPosition="right"
+            />
+
+                        <RecentInitiativeShowcase
+                title={
+                    <>
+                        National Teachers Award
+                        <br />
+                        25 October 2026
+                    </>
+                }
+                date="25 October 2026"
+                images={[
+                    img25oct2026_1, img25oct2026_2, img25oct2026_3, img25oct2026_4, img25oct2026_5, img25oct2026_6,
+                    img25oct2026_7,img25oct2026_8,img25oct2026_9,img25oct2026_10,img25oct2026_11,img25oct2026_12,
+                    img25oct2026_13,img25oct2026_14,img25oct2026_15,img25oct2026_16,img25oct2026_17,img25oct2026_18,
+                    img25oct2026_19,img25oct2026_20,img25oct2026_21,img25oct2026_22,img25oct2026_23,img25oct2026_24,
+                    img25oct2026_25,img25oct2026_26,img25oct2026_27
+                    
+                ]}
+                description={[
+                    "Be The Change Foundation successfully organized the National Ideal Teachers Award on 14th June 2026 in Mumbai. The event aimed to recognize and honor exceptional teachers from across the country for their dedication, innovation, and outstanding contribution to the field of education.",
+                    "The award ceremony witnessed the participation of educators representing multiple states of India. The prestigious occasion was graced by renowned educationists, social leaders, distinguished guests, and eminent personalities who presented the awards.",
+                    "This national-level initiative highlighted the indispensable role of teachers in nation-building and academic excellence and received widespread appreciation across educational institutions.",
                 ]}
                 primaryButtonText="Award Website"
                 primaryButtonLink="https://nationalteacheraward.com/"
